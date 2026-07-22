@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krishi AI — Smart Crop Advisor</title>
+    <meta name="description" content="AI-powered crop selection, water needs, and fertilizer recommendations for Indian farmers.">
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;500;800&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/style.css">
+    
+    <style>
+        /* ──── Tab System ──── */
+        .mode-tabs { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin: 40px auto 0; max-width: 700px; }
+        .mode-tab { flex: 1; min-width: 150px; padding: 18px 12px; border-radius: 20px; border: 1px solid var(--glass-border);
+                    background: var(--card-dark); cursor: pointer; color: var(--text-muted); font-family: 'Outfit';
+                    font-weight: 700; font-size: 1rem; transition: 0.3s; text-align: center; }
+        .mode-tab .tab-icon { display: block; font-size: 2rem; margin-bottom: 6px; }
+        .mode-tab.active { background: var(--primary); color: #000; box-shadow: 0 0 25px rgba(0,242,254,0.3); }
+        .mode-tab:hover:not(.active) { border-color: var(--primary); color: var(--primary); }
+
+        /* ──── Input Card ──── */
+        .input-card { max-width: 900px; margin: 40px auto 0; padding: 50px; border-radius: 30px;
+                      border: 1px solid var(--glass-border); background: rgba(5,11,20,0.85); }
+        .section-title { font-size: 0.72rem; letter-spacing: 2px; text-transform: uppercase;
+                         color: var(--text-muted); margin: 28px 0 16px; padding-bottom: 8px;
+                         border-bottom: 1px solid rgba(255,255,255,0.06); }
+
+        /* ──── Form Inputs ──── */
+        .field-group { margin-bottom: 20px; }
+        .field-label { display: flex; align-items: center; gap: 8px; margin-bottom: 8px;
+                       font-size: 0.9rem; font-weight: 600; color: #e2e8f0; }
+        .field-hint { font-size: 0.72rem; color: var(--text-muted); margin-bottom: 8px; line-height: 1.5; }
+        .field-input { width: 100%; padding: 14px 18px; background: rgba(255,255,255,0.04);
+                       border: 1px solid var(--glass-border); border-radius: 14px; color: #fff;
+                       font-size: 0.95rem; font-family: 'Outfit'; outline: none; transition: 0.3s;
+                       box-sizing: border-box; }
+        .field-input:focus { border-color: var(--primary); background: rgba(0,242,254,0.05); box-shadow: 0 0 12px rgba(0,242,254,0.15); }
+        .field-input::placeholder { color: rgba(255,255,255,0.2); }
+        .input-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .input-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+        select.field-input option { background: #050b14; color: #fff; }
+
+        /* ──── NPK Gauge ──── */
+        .npk-gauge-row { display: flex; gap: 10px; margin: 8px 0; }
+        .npk-gauge { flex: 1; }
+        .npk-label { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 4px; }
+        .gauge-track { height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
+        .gauge-fill { height: 100%; border-radius: 3px; transition: width 1s ease; }
+
+        /* ──── Helper Chips ──── */
+        .range-chip { display: inline-block; background: rgba(0,242,254,0.08); border: 1px solid rgba(0,242,254,0.15);
+                      color: #00f2fe; border-radius: 20px; padding: 3px 12px; font-size: 0.7rem; font-weight: 700; margin-left: 8px; }
+        .tip-chip { display: inline-block; font-size: 0.7rem; padding: 4px 12px; border-radius: 20px;
+                    background: rgba(168,255,120,0.08); border: 1px solid rgba(168,255,120,0.2);
+                    color: #a8ff78; margin: 4px 3px 0 0; }
+
+        /* ──── Run Button ──── */
+        .run-btn { width: 100%; margin-top: 36px; padding: 22px; font-size: 1.2rem; font-weight: 800;
+                   letter-spacing: 1px; border-radius: 20px; background: linear-gradient(135deg, #00f2fe, #4facfe);
+                   color: #000; border: none; cursor: pointer; transition: 0.3s; }
+        .run-btn:hover { opacity: 0.9; transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,242,254,0.3); }
+
+        /* ──── Result Panels ──── */
+        .result-panel { max-width: 900px; margin: 50px auto 0; display: none; }
+        .result-hero { padding: 50px; border-radius: 30px; border: 1px solid var(--glass-border);
+                       background: rgba(5,11,20,0.9); margin-bottom: 24px; }
+
+        /* ──── Crop Result ──── */
+        .suitability-ring { display: flex; align-items: center; gap: 28px; margin-bottom: 30px; }
+        .ring-svg { width: 120px; height: 120px; flex-shrink: 0; }
+        .ring-bg { fill: none; stroke: rgba(255,255,255,0.07); stroke-width: 10; }
+        .ring-arc { fill: none; stroke-width: 10; stroke-linecap: round;
+                    transform: rotate(-90deg); transform-origin: 50% 50%; transition: stroke-dashoffset 1.4s ease; }
+
+        .crop-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px; }
+        .info-tile { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 18px; }
+        .info-tile h5 { font-size: 0.68rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+        .info-tile p { color: #fff; font-size: 0.92rem; line-height: 1.6; margin: 0; }
+
+        .alt-crop-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
+        .alt-crop { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09); border-radius: 14px; padding: 14px; flex: 1; min-width: 110px; text-align: center; }
+        .alt-score { font-size: 1.3rem; font-weight: 800; margin-bottom: 2px; }
+        .alt-name { font-size: 0.78rem; color: var(--text-muted); }
+
+        .tip-card { background: rgba(168,255,120,0.04); border: 1px solid rgba(168,255,120,0.15); border-radius: 16px; padding: 18px; margin-top: 16px; }
+        .tip-card .tip-item { display: flex; gap: 10px; margin-bottom: 12px; font-size: 0.88rem; line-height: 1.5; }
+        .tip-card .tip-item:last-child { margin-bottom: 0; }
+
+        .deficit-alert { background: rgba(255,94,94,0.06); border: 1px solid rgba(255,94,94,0.2); border-radius: 14px; padding: 16px; margin-top: 16px; font-size: 0.85rem; }
+        .deficit-alert li { color: #ff9a9a; margin-bottom: 6px; line-height: 1.5; }
+
+        /* ──── Water Result ──── */
+        .water-stat { text-align: center; background: rgba(0,242,254,0.04); border: 1px solid rgba(0,242,254,0.1); border-radius: 20px; padding: 24px; }
+        .water-val { font-size: 2.8rem; font-weight: 800; color: #00f2fe; line-height: 1.1; }
+        .water-unit { font-size: 0.78rem; color: var(--text-muted); margin-top: 4px; letter-spacing: 1px; text-transform: uppercase; }
+        .stage-card { background: rgba(255,255,255,0.03); border-radius: 14px; padding: 16px; border: 1px solid rgba(255,255,255,0.07); margin-top: 16px; }
+        .stage-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.72rem; font-weight: 700; margin: 4px 4px 0 0; }
+        .critical-stage { background: rgba(255,190,60,0.1); border: 1px solid rgba(255,190,60,0.25); color: #ffbe3c; }
+
+        /* ──── Fert Result ──── */
+        .schedule-card { border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); overflow: hidden; margin-bottom: 16px; }
+        .schedule-header { background: rgba(0,242,254,0.07); padding: 16px 20px; font-weight: 700; font-size: 0.92rem; color: #00f2fe; display: flex; align-items: center; gap: 10px; }
+        .schedule-body { padding: 16px 20px; }
+        .fert-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .fert-row:last-child { border-bottom: none; }
+        .fert-name { font-weight: 600; font-size: 0.9rem; }
+        .fert-qty { color: #00f2fe; font-weight: 800; font-size: 0.9rem; }
+        .fert-note-txt { font-size: 0.72rem; color: var(--text-muted); margin-top: 3px; }
+
+        .ph-fix-card { background: rgba(255,94,94,0.05); border: 1px solid rgba(255,94,94,0.2); border-radius: 16px; padding: 20px; margin-bottom: 16px; }
+        .micro-card { background: rgba(255,163,60,0.04); border: 1px solid rgba(255,163,60,0.15); border-radius: 16px; padding: 20px; margin-bottom: 16px; }
+        .golden-rule { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.88rem; line-height: 1.5; }
+        .golden-rule:last-child { border-bottom: none; }
+
+        .cost-banner { background: linear-gradient(135deg, rgba(0,242,254,0.08), rgba(79,172,254,0.05)); border: 1px solid rgba(0,242,254,0.15); border-radius: 16px; padding: 20px; margin-top: 20px; display: flex; align-items: center; justify-content: space-between; }
+
+        .info-icon { display: inline-flex; align-items: center; justify-content: center; width: 14px; height: 14px; border-radius: 50%; background: rgba(255,255,255,0.1); color: var(--text-muted); font-size: 0.65rem; cursor: help; margin-left: 4px; transition: 0.3s; }
+        .info-icon:hover { background: var(--primary); color: #000; }
+        .section-divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent); margin: 30px 0; }
+        .field-input:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(0,242,254,0.1); }
+
+        @media (max-width: 680px) {
+            .input-grid-2, .input-grid-3, .crop-info-grid { grid-template-columns: 1fr; }
+            .input-card { padding: 28px 20px; }
+            .result-hero { padding: 28px 20px; }
+        }
+    </style>
+</head>
+<body class="fade-in">
+<div class="bg-glow" style="top: 5%; right: 5%;"></div>
+<div class="container" style="padding-top: 50px;">
+
+    <nav class="glass fade-in" data-aos="fade-down">
+        <div class="logo">KRISHI AI.</div>
+        <div class="nav-links">
+            <a href="dashboard.html" data-i18n="nav_dashboard">Dashboard</a>
+            <a href="detection.html" data-i18n="nav_scan">AI Scan</a>
+            <a href="resources.html" data-i18n="nav_resources">Resources</a>
+        </div>
+    </nav>
+
+    <header style="margin-top: 60px; text-align: center;" data-aos="fade-up">
+        <h1 style="font-size: 3.4rem; letter-spacing: -2px;">
+            Smart <span style="color: var(--secondary);" data-i18n="crop_advisor">Crop Advisor</span>.
+        </h1>
+        <p style="color: var(--text-muted); font-size: 1.1rem; margin-top: 10px; max-width: 640px; margin-inline: auto;">
+            AI-powered guidance on what to grow, how much to water, and which fertilizer to use —
+            <strong style="color: #fff;">explained in simple farmer-friendly language.</strong>
+        </p>
+    </header>
+
+    <!-- ── MODE TABS ── -->
+    <div class="mode-tabs" data-aos="fade-up" data-aos-delay="150">
+        <button class="mode-tab active" id="tabCrop" onclick="setMode('crop',this)">
+            <span class="tab-icon">🌱</span>Crop Select
+        </button>
+        <button class="mode-tab" id="tabWater" onclick="setMode('water',this)">
+            <span class="tab-icon">💧</span>Water Plan
+        </button>
+        <button class="mode-tab" id="tabFert" onclick="setMode('fert',this)">
+            <span class="tab-icon">🧪</span>Fertilizer Rx
+        </button>
+    </div>
+
+    <!-- ════════ INPUT CARD ════════ -->
+    <div class="input-card glass" data-aos="zoom-in" data-aos-delay="200">
+        
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 25px; flex-wrap: wrap; gap: 10px;">
+            <h3 id="modeTitle" style="font-size: 1.4rem; font-weight: 800; color: #fff;" data-i18n="field_analysis">Field Analysis</h3>
+            <button onclick="fillAverages()" style="background: rgba(0,242,254,0.1); border: 1px solid rgba(0,242,254,0.3); color: #00f2fe; padding: 6px 14px; border-radius: 10px; font-size: 0.75rem; cursor: pointer;" data-i18n="btn_avg">⚡ Use Average Values</button>
+        </div>
+
+        <!-- ── SECTION A: Soil Metrics ── -->
+        <div class="input-grid-3">
+            <div class="field-group">
+                <div class="field-label">
+                    <span data-i18n="label_n">🌿 Nitrogen (N)</span>
+                    <span class="info-icon" onclick="showHelp('n')">ⓘ</span>
+                </div>
+                <input id="nVal" class="field-input" type="number" placeholder="PPM (e.g. 80)">
+            </div>
+            <div class="field-group">
+                <div class="field-label">
+                    <span data-i18n="label_p">🌸 Phosphorus (P)</span>
+                    <span class="info-icon" onclick="showHelp('p')">ⓘ</span>
+                </div>
+                <input id="pVal" class="field-input" type="number" placeholder="PPM (e.g. 40)">
+            </div>
+            <div class="field-group">
+                <div class="field-label">
+                    <span data-i18n="label_k">💪 Potassium (K)</span>
+                    <span class="info-icon" onclick="showHelp('k')">ⓘ</span>
+                </div>
+                <input id="kVal" class="field-input" type="number" placeholder="PPM (e.g. 40)">
+            </div>
+        </div>
+
+        <div class="input-grid-2">
+            <div class="field-group">
+                <div class="field-label">
+                    <span data-i18n="label_ph">⚗️ Soil pH</span>
+                    <span class="info-icon" onclick="showHelp('ph')">ⓘ</span>
+                </div>
+                <input id="phVal" class="field-input" type="number" step="0.1" placeholder="3.0 - 10.0">
+            </div>
+            <div class="field-group">
+                <div class="field-label"><span>🗺️ Soil Type</span></div>
+                <select id="soilType" class="field-input">
+                    <option value="Loam">Dark / Loamy</option>
+                    <option value="Clay">Heavy Clay</option>
+                    <option value="Sandy Loam">Sandy / Light</option>
+                    <option value="Black">Black Soil</option>
+                    <option value="Red">Red Soil</option>
+                    <option value="Alluvial">Alluvial</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- ── SECTION B: Climate ── -->
+        <div class="section-divider"></div>
+        
+        <div class="input-grid-3">
+            <div class="field-group">
+                <div class="field-label"><span data-i18n="label_temp">🌡️ Temp (°C)</span> <span class="info-icon" onclick="showHelp('temp')">ⓘ</span></div>
+                <input id="tempVal" class="field-input" type="number" placeholder="e.g. 28">
+            </div>
+            <div class="field-group">
+                <div class="field-label"><span data-i18n="label_hum">💦 Humidity (%)</span> <span class="info-icon" onclick="showHelp('hum')">ⓘ</span></div>
+                <input id="humVal" class="field-input" type="number" placeholder="e.g. 60">
+            </div>
+            <div class="field-group">
+                <div class="field-label"><span data-i18n="label_area">📐 Area (Acres)</span></div>
+                <input id="areaVal" class="field-input" type="number" step="0.1" placeholder="e.g. 1.0">
+            </div>
+        </div>
+
+        <!-- ── SECTION C: Conditional ── -->
+        <div id="extraFields" style="display:none; margin-top: 10px; padding-top: 20px; border-top: 1px dashed rgba(255,255,255,0.1);">
+            <div class="input-grid-2">
+                <div class="field-group">
+                    <div class="field-label"><span>🌾 Crop</span></div>
+                    <select id="cropSel" class="field-input">
+                        <option>Rice</option><option>Wheat</option><option>Maize</option>
+                        <option>Cotton</option><option>Sugarcane</option><option>Groundnut</option>
+                        <option>Chickpea</option><option>Mustard</option><option>Tomato</option><option>Potato</option>
+                    </select>
+                </div>
+                <div class="field-group">
+                    <div class="field-label"><span>📅 Stage</span></div>
+                    <select id="stageSel" class="field-input">
+                        <option value="sowing">🌱 Sowing</option>
+                        <option value="vegetative">🌿 Growth</option>
+                        <option value="flowering">🌸 Flowering</option>
+                        <option value="ripening">🌾 Near Harvest</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <button class="run-btn" id="btnRun" onclick="runAnalysis()" data-i18n="btn_generate">⚡ GENERATE AI ADVISORY</button>
+    </div>
+
+    <!-- ════════════ CROP RESULT ════════════ -->
+    <div class="result-panel" id="resCrop">
+        <div class="result-hero">
+            <p style="font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);">BEST CROP FOR YOUR FIELD</p>
+            <div class="suitability-ring">
+                <svg class="ring-svg" viewBox="0 0 120 120">
+                    <circle class="ring-bg" cx="60" cy="60" r="50"/>
+                    <circle id="cropRingArc" class="ring-arc" cx="60" cy="60" r="50" stroke="#a8ff78" stroke-dasharray="314.2" stroke-dashoffset="314.2"/>
+                </svg>
+                <div>
+                    <div id="cropEmoji" style="font-size:3rem;line-height:1;">🌾</div>
+                    <h2 id="cropName" style="font-size:2.4rem;font-weight:800;margin:6px 0;color:#a8ff78;">—</h2>
+                    <div id="cropCategory" style="font-size:0.8rem;color:var(--text-muted);">—</div>
+                    <div id="cropSuitScore" style="font-size:0.85rem;margin-top:6px;font-weight:700;color:#a8ff78;">Suitability Score: —%</div>
+                </div>
+                <div style="flex:1;">
+                    <p id="cropWhySuitable" style="font-size:0.9rem;color:#fff;line-height:1.7;">—</p>
+                </div>
+            </div>
+
+            <div class="crop-info-grid">
+                <div class="info-tile" style="border-left:3px solid var(--secondary);">
+                    <h5>📅 Best Season & Duration</h5>
+                    <p id="cropSeason">—</p>
+                </div>
+                <div class="info-tile" style="border-left:3px solid #00f2fe;">
+                    <h5>💰 Market Price (MSP 2024)</h5>
+                    <p id="cropPrice">—</p>
+                </div>
+                <div class="info-tile" style="border-left:3px solid #ffa500;">
+                    <h5>🌾 Expected Yield</h5>
+                    <p id="cropYield">—</p>
+                </div>
+                <div class="info-tile" style="border-left:3px solid #ff5e5e;">
+                    <h5>📈 Profit Estimate</h5>
+                    <p id="cropProfit">—</p>
+                </div>
+                <div class="info-tile" style="border-left:3px solid var(--primary);">
+                    <h5>💧 Water Requirement</h5>
+                    <p id="cropWater">—</p>
+                </div>
+                <div class="info-tile" style="border-left:3px solid #a8ff78;">
+                    <h5>🌱 Companion Crops</h5>
+                    <p id="cropCompanion">—</p>
+                </div>
+            </div>
+
+            <div id="cropDeficitBox" class="deficit-alert" style="display:none;">
+                <strong style="color:#ff5e5e;">⚠️ Soil Preparation Needed Before Sowing:</strong>
+                <ul id="cropDeficitList" style="margin:10px 0 0 16px;"></ul>
+            </div>
+
+            <div class="section-title">🧑‍🌾 Expert Farmer Tips</div>
+            <div class="tip-card">
+                <div id="cropTips"></div>
+            </div>
+
+            <div class="section-title">🔄 Also Consider (Alternative Crops)</div>
+            <div class="alt-crop-row" id="altCrops"></div>
+        </div>
+    </div>
+
+    <!-- ════════════ WATER RESULT ════════════ -->
+    <div class="result-panel" id="resWater">
+        <div class="result-hero">
+            <p style="font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);">WATER NEEDS ANALYSIS</p>
+            <h2 id="waterCropTitle" style="font-size:2rem;color:#00f2fe;margin:8px 0;">—</h2>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:24px;" id="waterStatsGrid">
+                <div class="water-stat">
+                    <div class="water-val" id="waterDaily">—</div>
+                    <div class="water-unit">Litres / Day (per acre)</div>
+                </div>
+                <div class="water-stat">
+                    <div class="water-val" id="waterPerIrrig">—</div>
+                    <div class="water-unit">Litres per Irrigation</div>
+                </div>
+                <div class="water-stat">
+                    <div class="water-val" id="waterFreq">—</div>
+                    <div class="water-unit">Days between Irrigations</div>
+                </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;">
+                <div style="background:rgba(0,242,254,0.04);border:1px solid rgba(0,242,254,0.12);border-radius:16px;padding:20px;">
+                    <h5 style="font-size:0.7rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);margin-bottom:14px;">💧 RECOMMENDED METHOD</h5>
+                    <div id="waterMethodEmoji" style="font-size:2rem;">—</div>
+                    <div id="waterMethodName" style="font-size:1.1rem;font-weight:700;color:#00f2fe;margin:6px 0;">—</div>
+                    <div id="waterMethodHow" style="font-size:0.82rem;color:var(--text-muted);line-height:1.6;">—</div>
+                    <div id="waterMethodTip" style="margin-top:10px;font-size:0.8rem;color:#fff;font-weight:600;">—</div>
+                    <div id="waterMethodSavings" style="margin-top:6px;color:#a8ff78;font-size:0.78rem;font-weight:700;">—</div>
+                    <div id="waterMethodCost" style="margin-top:4px;color:var(--text-muted);font-size:0.75rem;">—</div>
+                </div>
+                <div style="background:rgba(255,190,60,0.04);border:1px solid rgba(255,190,60,0.12);border-radius:16px;padding:20px;">
+                    <h5 style="font-size:0.7rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);margin-bottom:14px;">⚠️ CRITICAL WATER STAGES</h5>
+                    <p style="font-size:0.78rem;color:var(--text-muted);margin-bottom:10px;">Never miss irrigation at these stages — it will badly hurt your yield:</p>
+                    <div id="waterCriticalStages"></div>
+                </div>
+            </div>
+
+            <div class="section-title">💡 Water Saving Tips</div>
+            <div class="tip-card">
+                <div id="waterSavingTips"></div>
+            </div>
+
+            <div style="background:rgba(168,255,120,0.05);border:1px solid rgba(168,255,120,0.15);border-radius:14px;padding:16px;margin-top:16px;">
+                <strong style="color:#a8ff78;font-size:0.82rem;">🏛️ GOVERNMENT SCHEME: </strong>
+                <span id="waterGovtScheme" style="font-size:0.82rem;color:#fff;line-height:1.6;">—</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════ FERTILIZER RESULT ════════════ -->
+    <div class="result-panel" id="resFert">
+        <div class="result-hero">
+            <p style="font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);">FERTILIZER PRESCRIPTION</p>
+            <h2 id="fertCropTitle" style="font-size:2rem;color:#a8ff78;margin:8px 0;">—</h2>
+
+            <!-- NPK Bar Comparison -->
+            <div style="margin:24px 0;">
+                <p style="font-size:0.78rem;color:var(--text-muted);margin-bottom:14px;">Current soil NPK vs. what your crop needs:</p>
+                <div id="npkBars"></div>
+            </div>
+
+            <!-- Ph fix -->
+            <div id="phFixSection"></div>
+
+            <!-- Application Schedule -->
+            <div class="section-title">📅 Application Schedule</div>
+            <div id="fertSchedule"></div>
+
+            <!-- Micronutrients -->
+            <div id="microSection"></div>
+
+            <!-- Cost Banner -->
+            <div class="cost-banner">
+                <div>
+                    <div style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Estimated Fertilizer Cost</div>
+                    <div id="fertCostVal" style="font-size:2rem;font-weight:800;color:#00f2fe;">—</div>
+                    <div style="font-size:0.75rem;color:var(--text-muted);">for your <span id="fertAreaDisplay">—</span> acre(s)</div>
+                </div>
+                <div style="text-align:right;max-width:350px;">
+                    <div style="color:#a8ff78;font-weight:700;font-size:0.82rem;">🏛️ Subsidy Available</div>
+                    <p id="fertSubsidy" style="font-size:0.78rem;color:var(--text-muted);margin-top:4px;line-height:1.6;">—</p>
+                </div>
+            </div>
+
+            <!-- Golden Rules -->
+            <div class="section-title">📋 Golden Rules Every Farmer Must Know</div>
+            <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:20px;">
+                <div id="fertGoldenRules"></div>
+            </div>
+        </div>
+    </div>
+
+</div><!-- /container -->
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+<script>
+AOS.init({ once: true, duration: 800 });
+let currentMode = 'crop';
+let lastCrop = 'Rice';
+
+function showHelp(key) {
+    const help = {
+        n: { t: '🌿 Nitrogen (N)', d: 'Nitrogen is essential for leaf growth and green color. Without it, plants turn yellow (Chlorosis).', r: '60 – 120 PPM' },
+        p: { t: '🌸 Phosphorus (P)', d: 'Helpful for root development, seed formation, and early energy. Vital for grains like Paddy and Wheat.', r: '30 – 60 PPM' },
+        k: { t: '💪 Potassium (K)', d: 'Builds plant immunity against pests, diseases, and drought. Improves fruit/grain quality.', r: '30 – 60 PPM' },
+        ph:{ t: '⚗️ Soil pH', d: 'Measures how Acidic or Alkaline your soil is. This affects how much food (NPK) the plant can actually eat.', r: '6.0 – 7.5 (Neutral)' },
+        temp: { t: '🌡️ Temperature', d: 'Most crops need specific heat levels to grow. Extreme heat or cold will stop growth.', r: '20°C – 35°C (Ideal)' },
+        hum:  { t: '💦 Humidity', d: 'Moisture in the air. High humidity increases risk of fungal diseases (Molds).', r: '40% – 70% (Normal)' },
+        rain: { t: '☔ Rainfall', d: 'Average monthly rain. Rice needs high rain, while Mustard or Chickpea need very little.', r: 'Varies by Crop' }
+    };
+    const item = help[key];
+    Swal.fire({
+        title: item.t,
+        html: `<div style="text-align:left; line-height:1.6; font-family:'Outfit';">
+                <p style="color:#94a3b8; font-size:0.95rem; margin-bottom:15px;">${item.d}</p>
+                <div style="background:rgba(0,242,254,0.05); border:1px solid rgba(0,242,254,0.2); border-radius:12px; padding:12px;">
+                    <span style="font-size:0.75rem; text-transform:uppercase; color:var(--text-muted); letter-spacing:1px;">Recommended Range</span>
+                    <div style="color:#00f2fe; font-size:1.1rem; font-weight:800; margin-top:4px;">${item.r}</div>
+                </div>
+               </div>`,
+        showConfirmButton: true, confirmButtonText: 'Got It',
+        confirmButtonColor: '#00f2fe', background: '#050b14', color: '#fff'
+    });
+}
+
+function fillAverages() {
+    document.getElementById('nVal').value = 80;
+    document.getElementById('pVal').value = 40;
+    document.getElementById('kVal').value = 40;
+    document.getElementById('phVal').value = 6.5;
+    document.getElementById('tempVal').value = 28;
+    document.getElementById('humVal').value = 65;
+    document.getElementById('areaVal').value = 1.0;
+    Swal.fire({
+        toast: true, position: 'top-end', icon: 'success',
+        title: 'Standard values applied!', showConfirmButton: false, timer: 1500
+    });
+}
+
+function setMode(mode, btn) {
+    currentMode = mode;
+    document.querySelectorAll('.mode-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const extraFields = document.getElementById('extraFields');
+    const fertExtra   = document.getElementById('fertExtra');
+
+    extraFields.style.display = mode !== 'crop' ? 'block' : 'none';
+    fertExtra.style.display   = mode === 'fert' ? 'block' : 'none';
+
+    const descs = {
+        crop:  'Enter your soil details — AI will recommend the best crop for your field, with profit estimate and farmer tips.',
+        water: 'Tell us your crop and field details — AI will calculate exact daily water needs and best irrigation method.',
+        fert:  'Enter your soil NPK values — AI will build a complete fertilizer schedule (what to buy, how much, when to apply).'
+    };
+    document.getElementById('modeDesc').innerText = descs[mode];
+    
+    // Hide all result panels
+    ['resCrop','resWater','resFert'].forEach(id => document.getElementById(id).style.display = 'none');
+}
+
+function getFormData() {
+    return {
+        N:           parseFloat(document.getElementById('nVal').value)    || 80,
+        P:           parseFloat(document.getElementById('pVal').value)    || 40,
+        K:           parseFloat(document.getElementById('kVal').value)    || 40,
+        ph:          parseFloat(document.getElementById('phVal').value)   || 6.5,
+        temperature: parseFloat(document.getElementById('tempVal').value) || 28,
+        humidity:    parseFloat(document.getElementById('humVal').value)  || 60,
+        monthly_rain:parseFloat(document.getElementById('rainVal').value) || 100,
+        rainfall:    parseFloat(document.getElementById('rainVal').value) || 100,
+        area:        parseFloat(document.getElementById('areaVal').value) || 1,
+        season:      document.getElementById('seasonSel').value,
+        soil_type:   document.getElementById('soilType').value,
+        crop:        document.getElementById('cropSel')?.value || lastCrop,
+        crop_stage:  document.getElementById('stageSel')?.value || 'sowing',
+        has_organic: document.getElementById('fymSel')?.value === 'true'
+    };
+}
+
+function runAnalysis() {
+    const data = getFormData();
+    lastCrop = data.crop;
+
+    Swal.fire({
+        title: 'Running AI Diagnostic...',
+        html: `<span style="color:#94a3b8;font-size:0.9rem;">Running optimization for <b style="color:#fff;">${currentMode.toUpperCase()}</b></span>`,
+        allowOutsideClick: false, showConfirmButton: false,
+        background: '#050b14', color: '#fff', didOpen: () => Swal.showLoading()
+    });
+
+    const endpoints = {
+        crop:  '/api/predict/crop',
+        water: '/api/predict/water',
+        fert:  '/api/predict/fertilizer'
+    };
+
+    fetch(`${endpoints[currentMode]}?lang=en`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    })
+    .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .then(res => {
+        Swal.close();
+        if (res.error) { Swal.fire('Error', res.error, 'error'); return; }
+        ['resCrop','resWater','resFert'].forEach(id => document.getElementById(id).style.display = 'none');
+        if (currentMode === 'crop')  renderCrop(res);
+        if (currentMode === 'water') renderWater(res);
+        if (currentMode === 'fert')  renderFert(res);
+    })
+    .catch(err => {
+        Swal.fire({ icon: 'error', title: 'Connection Error',
+            html: `Cannot reach AI engine.<br><small>${err.message}</small>`,
+            background: '#050b14', color: '#fff', confirmButtonColor: '#00f2fe' });
+    });
+}
+
+/* ── CROP RENDER ── */
+function renderCrop(d) {
+    const panel = document.getElementById('resCrop');
+    panel.style.display = 'block';
+    panel.scrollIntoView({ behavior: 'smooth' });
+
+    document.getElementById('cropEmoji').innerText       = d.emoji || '🌾';
+    document.getElementById('cropName').innerText         = d.crop || '—';
+    document.getElementById('cropCategory').innerText     = d.category + ' Crop' || '—';
+    document.getElementById('cropSuitScore').innerText    = `Suitability Score: ${d.suitability_score}%`;
+    document.getElementById('cropWhySuitable').innerText  = d.why_suitable || '—';
+    document.getElementById('cropSeason').innerText       = (d.season || '—') + ' · ' + (d.duration || '—');
+    document.getElementById('cropPrice').innerText        = d.market_price || '—';
+    document.getElementById('cropYield').innerText        = d.expected_yield || '—';
+    document.getElementById('cropProfit').innerText       = d.profit_estimate || '—';
+    document.getElementById('cropWater').innerHTML        = d.water_need || '—';
+    document.getElementById('cropCompanion').innerText    = (d.companion_crops || []).join(', ');
+
+    // Score ring
+    const arc = document.getElementById('cropRingArc');
+    const sc  = Math.min(d.suitability_score || 0, 100);
+    const color = sc >= 80 ? '#a8ff78' : sc >= 60 ? '#ffbe3c' : '#ff5e5e';
+    arc.setAttribute('stroke', color);
+    document.getElementById('cropSuitScore').style.color = color;
+    document.getElementById('cropName').style.color = color;
+    setTimeout(() => { arc.style.strokeDashoffset = 314.2 - (314.2 * sc / 100); }, 300);
+
+    // Deficits
+    const defBox  = document.getElementById('cropDeficitBox');
+    const defList = document.getElementById('cropDeficitList');
+    if (d.soil_prep_needed && d.soil_prep_needed.length > 0) {
+        defList.innerHTML = d.soil_prep_needed.map(x => `<li>${x}</li>`).join('');
+        defBox.style.display = 'block';
+    } else {
+        defBox.style.display = 'none';
+    }
+
+    // Tips
+    document.getElementById('cropTips').innerHTML = (d.farmer_tips || []).map((t, i) => `
+        <div class="tip-item"><span style="font-size:1.1rem;">✅</span><span>${t}</span></div>
+    `).join('');
+
+    // Alternatives
+    document.getElementById('altCrops').innerHTML = (d.alternatives || []).map(a => {
+        const col = a.score >= 80 ? '#a8ff78' : a.score >= 60 ? '#ffbe3c' : '#94a3b8';
+        return `<div class="alt-crop">
+            <div style="font-size:1.5rem;">${a.emoji}</div>
+            <div class="alt-score" style="color:${col};">${a.score}%</div>
+            <div class="alt-name">${a.name}</div>
+            <div style="font-size:0.65rem;color:var(--text-muted);">${a.season.split('(')[0].trim()}</div>
+        </div>`;
+    }).join('');
+
+    lastCrop = d.crop;
+}
+
+/* ── WATER RENDER ── */
+function renderWater(d) {
+    const panel = document.getElementById('resWater');
+    panel.style.display = 'block';
+    panel.scrollIntoView({ behavior: 'smooth' });
+
+    document.getElementById('waterCropTitle').innerText   = `💧 ${d.crop} — Water Needs (${d.area_acres} acre${d.area_acres != 1 ? 's' : ''})`;
+    document.getElementById('waterDaily').innerText       = fmtNum(d.daily_per_acre_liters);
+    document.getElementById('waterPerIrrig').innerText    = fmtNum(d.per_irrigation_liters);
+    document.getElementById('waterFreq').innerText        = d.irrigation_frequency_days;
+    document.getElementById('waterMethodEmoji').innerText = d.method_emoji || '💧';
+    document.getElementById('waterMethodName').innerText  = d.recommended_method || '—';
+    document.getElementById('waterMethodHow').innerText   = d.method_how || '—';
+    document.getElementById('waterMethodTip').innerText   = '💡 ' + (d.method_tip || '—');
+    document.getElementById('waterMethodSavings').innerText = '✅ ' + (d.method_savings || '—');
+    document.getElementById('waterMethodCost').innerText  = '💰 Setup Cost: ' + (d.method_cost || '—');
+    document.getElementById('waterGovtScheme').innerText  = d.government_scheme || '—';
+
+    // Critical stages
+    document.getElementById('waterCriticalStages').innerHTML = (d.critical_stages || []).map(s =>
+        `<span class="stage-badge critical-stage">⚡ ${s}</span>`
+    ).join('');
+
+    // Saving tips
+    document.getElementById('waterSavingTips').innerHTML = (d.water_saving_tips || []).map(t =>
+        `<div class="tip-item"><span style="font-size:1.1rem;">💡</span><span>${t}</span></div>`
+    ).join('');
+}
+
+/* ── FERTILIZER RENDER ── */
+function renderFert(d) {
+    const panel = document.getElementById('resFert');
+    panel.style.display = 'block';
+    panel.scrollIntoView({ behavior: 'smooth' });
+
+    document.getElementById('fertCropTitle').innerText  = `🧪 Fertilizer Plan: ${d.crop} (${d.area_acres} acre${d.area_acres != 1 ? 's' : ''})`;
+    document.getElementById('fertCostVal').innerText    = d.estimated_cost_inr > 0 ? `₹${fmtNum(d.estimated_cost_inr)}` : 'Negligible';
+    document.getElementById('fertAreaDisplay').innerText = d.area_acres;
+    document.getElementById('fertSubsidy').innerText    = d.subsidy_info || '—';
+
+    // NPK Bars
+    const bars   = document.getElementById('npkBars');
+    const curr   = d.current_npk   || {};
+    const target = d.target_npk_per_acre || {};
+    bars.innerHTML = ['N','P','K'].map(n => {
+        const cur  = curr[n] || 0;
+        const req  = target[n] || 1;
+        const pct  = Math.min(100, Math.round(cur / req * 100));
+        const col  = pct >= 90 ? '#a8ff78' : pct >= 60 ? '#ffbe3c' : '#ff5e5e';
+        const label= { N:'Nitrogen (N)', P:'Phosphorus (P)', K:'Potassium (K)' }[n];
+        return `<div style="margin-bottom:14px;">
+            <div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:5px;">
+                <span style="color:#fff;font-weight:600;">${label}</span>
+                <span style="color:${col};">${cur} / ${req} kg/acre (${pct}% of need)</span>
+            </div>
+            <div class="gauge-track">
+                <div class="gauge-fill" style="width:${pct}%;background:${col};"></div>
+            </div>
+        </div>`;
+    }).join('');
+
+    // pH Corrections
+    const phSec = document.getElementById('phFixSection');
+    phSec.innerHTML = '';
+    if (d.ph_correction && d.ph_correction.length > 0) {
+        d.ph_correction.forEach(fix => {
+            phSec.innerHTML += `<div class="ph-fix-card">
+                <div style="font-weight:800;color:#ff5e5e;margin-bottom:10px;">⚗️ pH Correction Required</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                    <div><div style="font-size:0.68rem;color:var(--text-muted);margin-bottom:4px;">ACTION</div><div style="font-weight:700;color:#fff;">${fix.action}</div></div>
+                    <div><div style="font-size:0.68rem;color:var(--text-muted);margin-bottom:4px;">DOSAGE</div><div style="color:#ff9a9a;font-weight:700;">${fix.dose}</div></div>
+                    <div><div style="font-size:0.68rem;color:var(--text-muted);margin-bottom:4px;">WHEN TO APPLY</div><div style="color:#fff;">${fix.when}</div></div>
+                    <div><div style="font-size:0.68rem;color:var(--text-muted);margin-bottom:4px;">WHY</div><div style="color:var(--text-muted);font-size:0.82rem;">${fix.why}</div></div>
+                </div>
+            </div>`;
+        });
+    }
+
+    // Schedule
+    const sched = document.getElementById('fertSchedule');
+    sched.innerHTML = (d.schedule || []).map(phase => `
+        <div class="schedule-card">
+            <div class="schedule-header">${phase.phase}</div>
+            <div class="schedule-body">
+                ${(phase.fertilizers || []).map(f => `
+                    <div class="fert-row">
+                        <div><div class="fert-name">${f.name}</div><div class="fert-note-txt">${f.note || ''}</div></div>
+                        <div class="fert-qty">${f.qty}</div>
+                    </div>`).join('')}
+                <div style="margin-top:12px;padding:12px;background:rgba(168,255,120,0.05);border-radius:10px;font-size:0.8rem;color:#a8ff78;line-height:1.5;">
+                    💡 ${phase.tip}
+                </div>
+            </div>
+        </div>`).join('');
+
+    // Micronutrients
+    const microSec = document.getElementById('microSection');
+    microSec.innerHTML = '';
+    if (d.micronutrients && d.micronutrients.length > 0) {
+        microSec.innerHTML = `<div class="section-title">🔬 Micronutrient Supplement</div>`;
+        d.micronutrients.forEach(m => {
+            microSec.innerHTML += `<div class="micro-card">
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+                    <div><strong style="color:#ffa500;">${m.name}</strong>
+                    <div style="font-size:0.78rem;color:var(--text-muted);margin-top:4px;">${m.tip}</div></div>
+                    <span style="min-width:fit-content;padding:4px 14px;background:rgba(255,163,60,0.1);border-radius:20px;font-weight:800;color:#ffa500;font-size:0.82rem;">⚗️ ${m.dose}</span>
+                </div>
+            </div>`;
+        });
+    }
+
+    // Golden Rules
+    document.getElementById('fertGoldenRules').innerHTML = (d.golden_rules || []).map(r =>
+        `<div class="golden-rule"><span style="font-size:1.1rem;">⭐</span><span>${r}</span></div>`
+    ).join('');
+
+    // Trigger NPK bar animation
+    setTimeout(() => {
+        document.querySelectorAll('#npkBars .gauge-fill').forEach(el => {
+            const w = el.style.width; el.style.width = '0'; setTimeout(() => { el.style.width = w; }, 100);
+        });
+    }, 300);
+}
+
+function fmtNum(n) {
+    if (!n && n !== 0) return '—';
+    return Number(n).toLocaleString('en-IN');
+}
+</script>
+
+<script src="assets/kisaan.js"></script>
+</body>
+</html>

@@ -1,0 +1,232 @@
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@300;500;800&family=Outfit:wght@300;400;700&display=swap');
+
+:root {
+    --primary: #00f2fe; /* Electric blue */
+    --primary-alt: #4facfe;
+    --secondary: #a8ff78; /* Lime spark */
+    --secondary-alt: #78ffd6;
+    --bg-dark: #050b14;
+    --card-dark: rgba(255, 255, 255, 0.05); /* Glass base */
+    --text-white: #f8f9fa;
+    --text-muted: #94a3b8;
+    --accent-glow: rgba(0, 242, 254, 0.4);
+    --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Outfit', sans-serif;
+}
+
+body {
+    background: radial-gradient(circle at top right, #101c2c, var(--bg-dark));
+    color: var(--text-white);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Custom Theme Scrollbar */
+::-webkit-scrollbar, *::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track, *::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb, *::-webkit-scrollbar-thumb {
+    background: rgba(0, 242, 254, 0.2);
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover, *::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
+    box-shadow: 0 0 10px var(--accent-glow);
+}
+
+/* Specific target for feeds */
+#detectionFeed::-webkit-scrollbar-thumb {
+    background: var(--primary-alt);
+    opacity: 0.5;
+}
+
+/* Firefox Support */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 242, 254, 0.2) transparent;
+}
+
+h1, h2, h3, .logo {
+    font-family: 'Unbounded', cursive;
+}
+
+.container {
+    max-width: 1300px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* Glassmorphism Effect */
+.glass {
+    background: var(--card-dark);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+/* Hero Section Grains/Glows */
+.bg-glow {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: var(--primary);
+    filter: blur(150px);
+    opacity: 0.2;
+    z-index: -1;
+    border-radius: 50%;
+}
+
+/* Navbar */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 40px;
+    margin-bottom: 40px;
+    border-radius: 25px;
+    margin-top: 20px;
+}
+
+.logo {
+    font-weight: 800;
+    font-size: 1.8rem;
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.nav-links a {
+    color: var(--text-white);
+    text-decoration: none;
+    margin-left: 30px;
+    font-weight: 500;
+    position: relative;
+    transition: 0.3s;
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -5px;
+    left: 0;
+    background: var(--primary);
+    transition: 0.3s;
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+/* Buttons */
+.btn {
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: none;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary), var(--primary-alt));
+    color: #000;
+}
+
+.btn-primary:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 0 30px var(--accent-glow);
+}
+
+/* Sidebar for Dashboard */
+.sidebar {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    bottom: 20px;
+    width: 280px;
+    z-index: 1000;
+    padding: 40px 20px;
+}
+
+.main-content {
+    margin-left: 320px;
+    padding: 20px;
+}
+
+/* Cards */
+.card {
+    padding: 30px;
+    margin-bottom: 20px;
+    transition: 0.3s ease;
+}
+
+.card:hover {
+    border-color: var(--primary);
+    transform: translateY(-5px);
+}
+
+/* Form Styles */
+input, select {
+    width: 100%;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    color: #fff;
+    font-size: 1rem;
+    transition: 0.3s;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 10px var(--accent-glow);
+}
+
+/* Grid System */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+/* Dashboard Specifics */
+.stat-value {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-top: 10px;
+    color: var(--primary);
+}
+
+.stat-label {
+    color: var(--text-muted);
+}
+
+/* Animations */
+[data-aos] {
+    transition-duration: 1000ms !important;
+}

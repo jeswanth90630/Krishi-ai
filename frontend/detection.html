@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Field Health Scan - Krishi AI</title>
+    <meta name="description" content="AI-powered field health scan for plant disease, pest detection and soil type classification with fertilizer recommendations.">
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;500;800&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/style.css">
+    
+    <style>
+        /* ── Upload zone ── */
+        .upload-area {
+            border: 2px dashed rgba(0,242,254,0.3);
+            padding: 60px 40px;
+            text-align: center;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: 0.4s;
+            max-width: 650px;
+            margin: 50px auto 0;
+            background: rgba(0,242,254,0.02);
+        }
+        .upload-area:hover { border-color: var(--primary); background: rgba(0,242,254,0.06); }
+        .upload-icon { font-size: 5rem; display: block; margin-bottom: 20px; }
+
+        /* ── Mode buttons ── */
+        .mode-btn {
+            border: 1px solid var(--glass-border);
+            background: var(--card-dark);
+            padding: 16px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            color: var(--text-muted);
+            font-weight: 700;
+            font-family: 'Outfit', sans-serif;
+            transition: 0.3s;
+            flex: 1;
+            font-size: 1rem;
+        }
+        .mode-btn.active { background: var(--primary); color: #000; box-shadow: 0 0 20px var(--accent-glow); }
+        .mode-btn:hover:not(.active) { border-color: var(--primary); color: var(--primary); }
+
+        /* ── Result card ── */
+        .result-card {
+            margin-top: 60px;
+            padding: 50px;
+            border-radius: 30px;
+            border: 1px solid var(--glass-border);
+            background: rgba(5,11,20,0.85);
+            backdrop-filter: blur(15px);
+            display: none;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-weight: 800;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            margin-top: 12px;
+        }
+        .advisory-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+        .advisory-cell {
+            background: rgba(255,255,255,0.04);
+            border-radius: 16px;
+            padding: 22px;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .advisory-cell h4 {
+            font-size: 0.72rem;
+            letter-spacing: 1.5px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            font-family: 'Outfit', sans-serif;
+        }
+        .advisory-cell p { color: #fff; font-size: 0.97rem; line-height: 1.6; margin: 0; }
+        .action-btns { display: flex; flex-direction: column; gap: 14px; min-width: 210px; }
+        .preview-img { width: 100%; max-height: 200px; object-fit: contain; border-radius: 16px; margin-bottom: 15px; }
+
+        /* ── Soil-specific panels ── */
+        #soilExtended { display: none; margin-top: 0; }
+
+        .soil-profile-bar {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 10px;
+        }
+        .soil-profile-bar .bar-label {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            min-width: 130px;
+        }
+        .soil-bar-track {
+            flex: 1;
+            height: 8px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .soil-bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            background: linear-gradient(90deg, #00f2fe, #4facfe);
+            transition: width 1.2s ease;
+        }
+        .soil-bar-val {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #00f2fe;
+            min-width: 38px;
+            text-align: right;
+        }
+
+        .crop-card-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 14px;
+        }
+        .crop-card {
+            background: rgba(0,242,254,0.06);
+            border: 1px solid rgba(0,242,254,0.15);
+            border-radius: 14px;
+            padding: 14px 18px;
+            min-width: 140px;
+            flex: 1;
+        }
+        .crop-card .crop-name { font-weight: 700; font-size: 0.95rem; color: #fff; }
+        .crop-card .crop-meta { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; }
+        .crop-suitability-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            margin-top: 8px;
+        }
+        .suit-high   { background: rgba(168,255,120,0.15); color: #a8ff78; border: 1px solid rgba(168,255,120,0.3); }
+        .suit-medium { background: rgba(255,190,60,0.15);  color: #ffbe3c; border: 1px solid rgba(255,190,60,0.3); }
+        .suit-low    { background: rgba(255,94,94,0.15);   color: #ff5e5e; border: 1px solid rgba(255,94,94,0.3); }
+
+        .fert-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 0.88rem; }
+        .fert-table td { padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .fert-table td:first-child { color: var(--text-muted); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.8px; }
+        .fert-table td:last-child  { color: #fff; font-weight: 600; }
+
+        .deficiency-chip {
+            display: inline-block;
+            padding: 5px 14px;
+            background: rgba(255,94,94,0.12);
+            border: 1px solid rgba(255,94,94,0.25);
+            border-radius: 20px;
+            color: #ff9a9a;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin: 4px 4px 0 0;
+        }
+
+        .ph-indicator {
+            position: relative;
+            height: 24px;
+            background: linear-gradient(90deg, #ff4e42 0%, #ff9a3c 14%, #ffec3c 28%, #a8ff78 43%, #00f2fe 57%, #4facfe 71%, #6e45e2 100%);
+            border-radius: 12px;
+            margin: 14px 0;
+        }
+        .ph-pointer {
+            position: absolute;
+            top: -8px;
+            transform: translateX(-50%);
+            font-size: 1.2rem;
+            transition: left 1s ease;
+        }
+        .ph-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .soil-section-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            margin: 30px 0 14px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .productivity-ring-wrap {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            background: rgba(0,242,254,0.04);
+            border: 1px solid rgba(0,242,254,0.1);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+        .ring-svg { width: 100px; height: 100px; flex-shrink: 0; }
+        .ring-bg { fill: none; stroke: rgba(255,255,255,0.07); stroke-width: 8; }
+        .ring-fill { fill: none; stroke-width: 8; stroke-linecap: round;
+                     transform: rotate(-90deg); transform-origin: 50% 50%;
+                     transition: stroke-dashoffset 1.5s ease; }
+
+        @media (max-width: 700px) {
+            .advisory-grid { grid-template-columns: 1fr; }
+            .result-flex { flex-direction: column; }
+            .crop-card { min-width: 120px; }
+        }
+    </style>
+</head>
+<body class="fade-in">
+
+<div class="bg-glow" style="top: 10%; right: 10%;"></div>
+
+<div class="container" style="padding-top: 50px;">
+    <nav class="glass fade-in" data-aos="fade-down">
+        <div class="logo">KRISHI AI.</div>
+        <div class="nav-links">
+            <a href="dashboard.html" data-i18n="nav_dashboard">Dashboard</a>
+            <a href="prediction.html" data-i18n="nav_schemes">Forecasting</a>
+            <a href="resources.html" data-i18n="nav_resources">Resources</a>
+        </div>
+    </nav>
+
+    <header style="margin-top: 60px; text-align: center;" data-aos="fade-up">
+        <h1 style="font-size: 3.5rem; letter-spacing: -2px;">Field <span style="color: var(--primary);">Health</span> Scan.</h1>
+        <p style="color: var(--text-muted); font-size: 1.2rem; margin-top: 12px;">MobileNetV3 Deep Learning · Soil Dataset Analysis · Real-time Diagnostics</p>
+    </header>
+
+    <!-- Mode Tabs -->
+    <div style="display: flex; gap: 16px; margin-top: 50px; max-width: 700px; margin-left: auto; margin-right: auto;" data-aos="fade-up" data-aos-delay="200">
+        <button class="mode-btn active" id="btnDisease" onclick="setMode('disease', this)" data-i18n="pest_scan">🦠 Plant Health</button>
+        <button class="mode-btn" id="btnPest"    onclick="setMode('pest', this)" data-i18n="pest_scan">🐜 Pest Alert</button>
+        <button class="mode-btn" id="btnSoil"    onclick="setMode('soil', this)" data-i18n="soil_scan">🪨 Soil Health</button>
+    </div>
+
+    <!-- Upload Drop Zone -->
+    <div class="upload-area glass" id="dropArea" data-aos="zoom-in" data-aos-delay="400">
+        <span class="upload-icon" id="previewIcon">🌿</span>
+        <h2 id="uploadTitle" style="font-size: 1.8rem; margin-bottom: 10px;">Upload Plant Leaf Image</h2>
+        <p id="uploadHint" style="color: var(--text-muted);">Drag &amp; drop or click to browse · JPG, PNG supported · Max 10MB</p>
+        <input type="file" id="fileIn" accept="image/*" style="display:none;">
+        <button class="btn btn-primary" style="margin-top: 28px; padding: 14px 35px; font-size: 1rem;" onclick="document.getElementById('fileIn').click(); event.stopPropagation();">
+            📁 Browse Image
+        </button>
+    </div>
+
+    <!-- ═══ RESULT CARD ═══ -->
+    <div class="result-card" id="resCard" data-aos="fade-up">
+        <div class="result-flex" style="display:flex; justify-content:space-between; align-items:flex-start; gap:30px;">
+            <div style="flex:1; min-width:0;">
+                <p id="resSubLabel" style="color: var(--text-muted); font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px;">DIAGNOSTIC RESULT</p>
+                <h2 id="resTitle" style="font-size: 2.2rem; margin: 0; word-break: break-word;">—</h2>
+                <p id="resDetail" style="color: var(--text-muted); font-size: 0.95rem; margin-top: 8px;">Confidence: —% | Engine: MobileNetV3</p>
+                <div id="statusBadge" class="status-badge">● ANALYZING</div>
+
+                <!-- Standard 4-cell advisory grid (disease / pest) -->
+                <div class="advisory-grid" id="stdGrid">
+                    <div class="advisory-cell" style="border-left: 3px solid var(--primary);">
+                        <h4 id="lbl0" style="color: var(--primary);">📉 IMPACT FORECAST</h4>
+                        <p id="val0">—</p>
+                    </div>
+                    <div class="advisory-cell" style="border-left: 3px solid var(--secondary);">
+                        <h4 id="lbl1" style="color: var(--secondary);">🛡️ RECOMMENDED ACTION</h4>
+                        <p id="val1">—</p>
+                    </div>
+                    <div class="advisory-cell" style="border-left: 3px solid #ffa500;">
+                        <h4 id="lbl2" style="color: #ffa500;">🧬 SPREAD RISK</h4>
+                        <p id="val2">—</p>
+                    </div>
+                    <div class="advisory-cell" style="border-left: 3px solid #ff5e5e;">
+                        <h4 id="lbl3" style="color: #ff5e5e;">⏱️ NEXT STEP</h4>
+                        <p id="val3">—</p>
+                    </div>
+                </div>
+
+                <!-- ═══ SOIL EXTENDED PANEL ═══ -->
+                <div id="soilExtended">
+
+                    <!-- Productivity ring + status -->
+                    <div class="productivity-ring-wrap" id="productivityWrap">
+                        <svg class="ring-svg" viewBox="0 0 100 100">
+                            <circle class="ring-bg" cx="50" cy="50" r="40"/>
+                            <circle class="ring-fill" id="ringCircle" cx="50" cy="50" r="40"
+                                    stroke="#00f2fe"
+                                    stroke-dasharray="251.2"
+                                    stroke-dashoffset="251.2"/>
+                        </svg>
+                        <div>
+                            <div style="font-size:0.72rem;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;">Productivity Index</div>
+                            <div id="prodIndexVal" style="font-size:2.8rem;font-weight:800;color:#00f2fe;line-height:1;">—</div>
+                            <div id="prodStatus" style="font-size:0.88rem;margin-top:6px;">—</div>
+                            <div id="annualYield" style="font-size:0.78rem;color:var(--text-muted);margin-top:4px;">Annual yield potential: —</div>
+                        </div>
+                        <div style="flex:1;">
+                            <div style="font-size:0.72rem;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;">Soil Verdict</div>
+                            <p id="soilVerdict" style="font-size:0.9rem;color:#fff;margin-top:8px;line-height:1.6;">—</p>
+                        </div>
+                    </div>
+
+                    <!-- Soil profile metrics -->
+                    <div class="soil-section-title">🧪 Soil Profile</div>
+                    <div id="soilProfileGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                        <div class="advisory-cell">
+                            <h4 style="color:#4facfe;">⚗️ pH RANGE</h4>
+                            <p id="soilPH">—</p>
+                            <div class="ph-indicator" id="phBar">
+                                <span class="ph-pointer" id="phPointer">📍</span>
+                            </div>
+                            <div class="ph-labels"><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div>
+                        </div>
+                        <div class="advisory-cell">
+                            <h4 style="color:#a8ff78;">🌊 WATER PROFILE</h4>
+                            <div class="soil-profile-bar">
+                                <span class="bar-label">Water Retention</span>
+                                <div class="soil-bar-track"><div class="soil-bar-fill" id="retentionBar" style="width:0%"></div></div>
+                                <span class="soil-bar-val" id="retentionVal">—</span>
+                            </div>
+                            <div class="soil-profile-bar">
+                                <span class="bar-label">Drainage</span>
+                                <div class="soil-bar-track"><div class="soil-bar-fill" id="drainageBar" style="width:0%;background:linear-gradient(90deg,#ffa500,#ffec3c)"></div></div>
+                                <span class="soil-bar-val" id="drainageVal">—</span>
+                            </div>
+                            <div class="soil-profile-bar">
+                                <span class="bar-label">Organic Matter</span>
+                                <div class="soil-bar-track"><div class="soil-bar-fill" id="omBar" style="width:0%;background:linear-gradient(90deg,#a8ff78,#00b09b)"></div></div>
+                                <span class="soil-bar-val" id="omVal">—</span>
+                            </div>
+                        </div>
+                        <div class="advisory-cell" style="grid-column:1/-1;">
+                            <h4 style="color:#ff9a3c;">⚠️ KEY NUTRIENT DEFICIENCIES</h4>
+                            <div id="deficiencyChips" style="margin-top:8px;">—</div>
+                        </div>
+                    </div>
+
+                    <!-- Characteristics -->
+                    <div class="advisory-cell" style="margin-top:16px;">
+                        <h4 style="color:var(--text-muted);">📋 CHARACTERISTICS</h4>
+                        <p id="soilCharacteristics">—</p>
+                    </div>
+
+                    <!-- pH Management -->
+                    <div class="soil-section-title">⚗️ pH Management Guide</div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                        <div class="advisory-cell" style="border-left:3px solid #ff5e5e;">
+                            <h4 style="color:#ff5e5e;">🔴 IF ACIDIC (pH &lt; <span id="idealPH1">—</span>)</h4>
+                            <p id="acidicAction">—</p>
+                        </div>
+                        <div class="advisory-cell" style="border-left:3px solid #ffa500;">
+                            <h4 style="color:#ffa500;">🟡 IF ALKALINE (pH > <span id="idealPH2">—</span>)</h4>
+                            <p id="alkalineAction">—</p>
+                        </div>
+                    </div>
+
+                    <!-- Recommended Crops -->
+                    <div class="soil-section-title">🌾 Recommended Crops</div>
+                    <div class="crop-card-row" id="cropCardRow"></div>
+                    <p id="irrigationInfo" style="font-size:0.82rem;color:var(--text-muted);margin-top:14px;">💧 —</p>
+
+                    <!-- Fertilizer Plan -->
+                    <div class="soil-section-title">🧬 Fertilizer Plan</div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                        <div class="advisory-cell">
+                            <h4 style="color:#00f2fe;">⚗️ BASE APPLICATION (per hectare)</h4>
+                            <table class="fert-table" id="baseFertTable"></table>
+                        </div>
+                        <div class="advisory-cell">
+                            <h4 style="color:#4facfe;">📅 TOP DRESSING</h4>
+                            <table class="fert-table" id="topDressTable"></table>
+                        </div>
+                        <div class="advisory-cell">
+                            <h4 style="color:#a8ff78;">♻️ ORGANIC INPUTS</h4>
+                            <table class="fert-table" id="organicTable"></table>
+                        </div>
+                        <div class="advisory-cell">
+                            <h4 style="color:#ffa500;">🔬 MICRONUTRIENTS</h4>
+                            <table class="fert-table" id="microTable"></table>
+                        </div>
+                    </div>
+                    <div class="advisory-cell" style="margin-top:16px;border-left:3px solid var(--primary);">
+                        <h4 style="color:var(--primary);">📋 APPLICATION SCHEDULE</h4>
+                        <p id="fertSchedule">—</p>
+                    </div>
+
+                </div><!-- /soilExtended -->
+            </div>
+
+            <!-- Right side actions -->
+            <div class="action-btns">
+                <img id="thumbImg" class="preview-img" src="" alt="Scanned Image" style="display:none;">
+                <button class="btn btn-primary" onclick="speakResult()">🔊 Speak Result</button>
+                <button id="downloadBtn" class="btn glass" onclick="downloadReport()" style="display:none;background:rgba(0,242,254,0.07);color:#00f2fe;border-color:rgba(0,242,254,0.3);">📥 Download Report</button>
+                <button class="btn glass" onclick="resetScan()" style="background: rgba(255,94,94,0.07); color:#ff5e5e; border-color:rgba(255,94,94,0.3);">🔄 New Scan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+<script>
+AOS.init({ once: true, duration: 800 });
+let currentMode = 'disease';
+let lastSpeak   = '';
+let lastData    = null;
+
+/* ── Mode switching ── */
+function setMode(mode, btn) {
+    currentMode = mode;
+    document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const cfg = {
+        disease: { icon: '🌿', title: 'Upload Plant Leaf Image',    hint: 'Best results with close-up, well-lit leaf photos.' },
+        pest:    { icon: '🐛', title: 'Upload Pest / Insect Image',  hint: 'Clear photo of the pest or infested crop area.' },
+        soil:    { icon: '🪨', title: 'Upload Soil Sample Image',    hint: 'Spread soil flat on a white surface, photo in natural light.' }
+    };
+    document.getElementById('previewIcon').innerText  = cfg[mode].icon;
+    document.getElementById('uploadTitle').innerText  = cfg[mode].title;
+    document.getElementById('uploadHint').innerText   = cfg[mode].hint;
+    document.getElementById('resCard').style.display  = 'none';
+    document.getElementById('thumbImg').style.display = 'none';
+}
+
+/* ── File input / drag-drop ── */
+const dropArea = document.getElementById('dropArea');
+const fileIn   = document.getElementById('fileIn');
+
+dropArea.addEventListener('click',    () => fileIn.click());
+dropArea.addEventListener('dragover',  e  => { e.preventDefault(); dropArea.style.borderColor = 'var(--primary)'; });
+dropArea.addEventListener('dragleave', () => dropArea.style.borderColor = 'rgba(0,242,254,0.3)');
+dropArea.addEventListener('drop', e => {
+    e.preventDefault();
+    dropArea.style.borderColor = 'rgba(0,242,254,0.3)';
+    if (e.dataTransfer.files[0]) processFile(e.dataTransfer.files[0]);
+});
+fileIn.addEventListener('change', e => { if (e.target.files[0]) processFile(e.target.files[0]); });
+
+/* ── Main processing ── */
+function processFile(file) {
+    if (!file.type.startsWith('image/')) {
+        Swal.fire('Invalid File', 'Please upload an image file (JPG, PNG, etc.)', 'error'); return;
+    }
+    const reader = new FileReader();
+    reader.onload = ev => {
+        const thumb = document.getElementById('thumbImg');
+        thumb.src = ev.target.result; thumb.style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+
+    Swal.fire({
+        title: 'Running Field Neural Diagnostic...',
+        html: `Running <b>MobileNetV3</b> neural inference<br>
+               <span style="font-size:0.82rem;color:#94a3b8;">Mode: ${currentMode.toUpperCase()} · AI Advisory Hub active</span>`,
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        background: '#050b14', color: '#fff',
+        didOpen: () => Swal.showLoading()
+    });
+
+    const fd = new FormData();
+    fd.append('file', file);
+
+    fetch(`/api/detect/${currentMode}?lang=en`, { method: 'POST', body: fd })
+        .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+        .then(data => { Swal.close(); lastData = data; renderResult(data); })
+        .catch(err => {
+            Swal.fire({ icon: 'error', title: 'Connection Error',
+                html: `Could not reach the AI diagnostic engine.<br><small>${err.message}</small><br><br>Ensure the backend pulse is active.`,
+                background: '#050b14', color: '#fff', confirmButtonColor: '#00f2fe' });
+        });
+}
+
+/* ── Render result ── */
+function renderResult(data) {
+    const card = document.getElementById('resCard');
+    card.style.display = 'block';
+    card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    const title  = document.getElementById('resTitle');
+    const detail = document.getElementById('resDetail');
+    const badge  = document.getElementById('statusBadge');
+
+    // Hide/show soil extended panel
+    const stdGrid    = document.getElementById('stdGrid');
+    const soilExt    = document.getElementById('soilExtended');
+    const dlBtn      = document.getElementById('downloadBtn');
+
+    if (currentMode !== 'soil') {
+        stdGrid.style.display  = 'grid';
+        soilExt.style.display  = 'none';
+        dlBtn.style.display    = 'none';
+    }
+
+    /* ── DISEASE ── */
+    if (currentMode === 'disease') {
+        const isHealthy     = data.is_healthy === true;
+        const notRecognized = !data.plant || data.disease === 'Unrecognized' || data.status?.includes('Not Recognized');
+        document.getElementById('resSubLabel').innerText = 'PLANT HEALTH DIAGNOSTIC';
+
+        if (notRecognized) {
+            title.style.color = '#ffa500';
+            title.innerText   = '⚠️ Not a Recognizable Plant Leaf';
+            detail.innerText  = `Confidence: ${data.confidence}% — Image unclear or not a plant leaf`;
+            setBadge(badge, '● NOT RECOGNIZED', '#ffa500');
+        } else if (isHealthy) {
+            title.style.color = '#a8ff78';
+            title.innerText   = `✅ ${data.plant} — Healthy`;
+            detail.innerText  = `Confidence: ${data.confidence}% | Class: ${data.raw_class || ''}`;
+            setBadge(badge, '● HEALTHY — No Treatment Needed', '#a8ff78');
+        } else {
+            title.style.color = '#ff5e5e';
+            title.innerText   = `🔴 ${data.plant} — ${data.disease}`;
+            detail.innerText  = `Confidence: ${data.confidence}% | Class: ${data.raw_class || ''}`;
+            setBadge(badge, '● DISEASE DETECTED — Act Now', '#ff5e5e');
+        }
+
+        const p = data.prediction || {};
+        setGridCell(0, '📉 YIELD IMPACT FORECAST',       'var(--primary)',  p.impact_forecast);
+        setGridCell(1, '🛡️ TREATMENT RECOMMENDATION',    'var(--secondary)', p.recommended_action);
+        setGridCell(2, '🧬 SPREAD RISK LEVEL',           '#ffa500',         p.spread_risk);
+        setGridCell(3, '⏱️ NEXT MONITORING',             '#ff5e5e',         p.next_checkpoint);
+        lastSpeak = `${data.plant || 'Plant'} is ${isHealthy ? 'healthy' : 'diseased: ' + data.disease}. Confidence: ${data.confidence} percent.`;
+
+    /* ── PEST ── */
+    } else if (currentMode === 'pest') {
+        const notRecognized = data.pest === 'Unrecognized';
+        document.getElementById('resSubLabel').innerText = 'PEST IDENTIFICATION';
+        title.style.color = notRecognized ? '#ffa500' : '#ff9a3c';
+        title.innerText   = notRecognized ? '⚠️ Unrecognized Image' : `🐛 ${data.pest}`;
+        const sci = data.scientific_name ? ` (${data.scientific_name})` : '';
+        detail.innerText = `Confidence: ${data.confidence}% | ${notRecognized ? 'No match found' : 'Pest Identified' + sci}`;
+        setBadge(badge, notRecognized ? '● NOT RECOGNIZED' : `● ${data.threat_level?.toUpperCase() || 'PEST ALERT'}`, '#ff9a3c');
+
+        const p = data.prediction || {};
+        const crops = Array.isArray(p.endangered_crops) && p.endangered_crops.length > 0
+            ? p.endangered_crops.join(' · ') : 'Multiple agricultural crops';
+        setGridCell(0, '🌾 ENDANGERED CROPS',       'var(--primary)',   crops);
+        setGridCell(1, '💊 CHEMICAL CONTROL',        'var(--secondary)', p.strategic_recommendation);
+        setGridCell(2, '🌿 BIOLOGICAL / ORGANIC',   '#ffa500',          (p.biological_control||'') + (p.organic_control ? '  |  Organic: '+p.organic_control : ''));
+        setGridCell(3, '🚜 CULTURAL PREVENTION',    '#ff5e5e',          p.cultural_control);
+        lastSpeak = `Pest detected: ${data.pest}. Threat level: ${data.threat_level}. Crops at risk: ${crops}. Confidence: ${data.confidence} percent.`;
+
+    /* ── SOIL ── */
+    } else {
+        document.getElementById('resSubLabel').innerText = 'SOIL HEALTH ANALYSIS';
+        stdGrid.style.display = 'none';
+        soilExt.style.display = 'block';
+        dlBtn.style.display   = 'block';
+
+        const clr = data.soil_color || '#8B7355';
+        title.style.color = clr;
+        title.innerText   = `🪨 ${data.display_name || data.soil} Soil`;
+        detail.innerText  = `Confidence: ${data.confidence}% | Soil type classified · Dataset-driven analysis`;
+
+        const v = data.verdict || {};
+        setBadge(badge, v.status || '● SOIL CLASSIFIED', clr);
+
+        // Productivity ring
+        const idx = v.productivity_index || 70;
+        animateRing(idx, clr);
+        document.getElementById('prodIndexVal').innerText = idx + '/100';
+        document.getElementById('prodStatus').innerText   = v.status || '—';
+        document.getElementById('annualYield').innerText  = 'Annual yield potential: ' + (v.annual_yield || '—');
+        document.getElementById('soilVerdict').innerText  = v.health_verdict || '—';
+
+        // Profile
+        const pr = data.profile || {};
+        document.getElementById('soilPH').innerText = `pH ${pr.ph_range || '—'} · Target: ${pr.ideal_ph || '—'}`;
+
+        // pH bar pointer
+        const idealPH = parseFloat(pr.ideal_ph) || 7.0;
+        const phPct   = Math.max(0, Math.min(100, ((idealPH - 4) / 6) * 100));
+        document.getElementById('phPointer').style.left = phPct + '%';
+
+        // Water bars
+        const retMap  = { 'Very High': 95, 'High': 78, 'Moderate': 55, 'Low to Moderate': 40, 'Low': 25, 'Very Low': 12 };
+        const drainMap= { 'Excessive': 95, 'Excellent (too fast)': 92, 'Good': 75, 'Moderate to Good': 65, 'Moderate': 50, 'Poor': 20 };
+        const omMap   = { 'High (3–10%)': 85, 'Medium (1.5–2.5%)': 60, 'Medium (1.0–2.0%)': 55, 'Low to Medium (0.8–2%)': 45, 'Low (0.5–1.5%)': 35, 'Very Low (< 1%)': 20, 'Very Low (< 0.5%)': 10 };
+
+        const wr = pr.water_retention || '';
+        const dr = pr.drainage || '';
+        const om = pr.organic_matter || '';
+
+        setTimeout(() => {
+            document.getElementById('retentionBar').style.width = (retMap[wr] || 50) + '%';
+            document.getElementById('drainageBar').style.width  = (drainMap[dr] || 50) + '%';
+            document.getElementById('omBar').style.width        = (omMap[om] || 40) + '%';
+        }, 200);
+
+        document.getElementById('retentionVal').innerText = wr.split(' ')[0] || '—';
+        document.getElementById('drainageVal').innerText  = dr.split(' ')[0] || '—';
+        document.getElementById('omVal').innerText        = om.split(' (')[0] || '—';
+
+        // Deficiency chips
+        const defEl = document.getElementById('deficiencyChips');
+        defEl.innerHTML = '';
+        (pr.key_deficiencies || []).forEach(d => {
+            const chip = document.createElement('span');
+            chip.className = 'deficiency-chip';
+            chip.innerText = d;
+            defEl.appendChild(chip);
+        });
+
+        document.getElementById('soilCharacteristics').innerText = pr.characteristics || '—';
+
+        // pH management
+        const ph_mgmt = data.ph_management || {};
+        document.getElementById('idealPH1').innerText  = ph_mgmt.ideal_ph || '7.0';
+        document.getElementById('idealPH2').innerText  = ph_mgmt.ideal_ph || '7.0';
+        document.getElementById('acidicAction').innerText   = ph_mgmt.if_acidic   || '—';
+        document.getElementById('alkalineAction').innerText = ph_mgmt.if_alkaline || '—';
+
+        // Crops
+        const cropRow = document.getElementById('cropCardRow');
+        cropRow.innerHTML = '';
+        (data.crops?.top_list || []).forEach(c => {
+            const suitClass = c.suitability >= 90 ? 'suit-high' : c.suitability >= 75 ? 'suit-medium' : 'suit-low';
+            cropRow.innerHTML += `<div class="crop-card">
+                <div class="crop-name">${c.name}</div>
+                <div class="crop-meta">📅 ${c.season} · 🌾 ${c.yield}</div>
+                <span class="crop-suitability-badge ${suitClass}">⭐ ${c.suitability}% Suitable</span>
+            </div>`;
+        });
+        document.getElementById('irrigationInfo').innerText = '💧 ' + (data.crops?.irrigation || '—');
+
+        // Fertilizer tables
+        fillFertTable('baseFertTable',  data.fertilizer?.base_application || {});
+        fillFertTable('topDressTable',  data.fertilizer?.top_dressing     || {});
+        fillFertTable('organicTable',   data.fertilizer?.organic_inputs   || {});
+        fillFertTable('microTable',     data.fertilizer?.micronutrients   || {});
+        document.getElementById('fertSchedule').innerText = data.fertilizer?.schedule || '—';
+
+        lastSpeak = `Soil type detected: ${data.display_name || data.soil}. Confidence: ${data.confidence} percent. 
+            Recommended crops: ${data.crops?.crop_names || '—'}. 
+            Key deficiencies: ${(data.profile?.key_deficiencies || []).join(', ')}.
+            ${v.health_verdict || ''}`;
+    }
+}
+
+/* ── Helpers ── */
+function setBadge(el, text, color) {
+    el.innerText = text;
+    el.style.background = color + '22';
+    el.style.color      = color;
+    el.style.border     = `1px solid ${color}`;
+}
+
+function setGridCell(idx, label, color, value) {
+    document.getElementById('lbl' + idx).innerText = label;
+    document.getElementById('lbl' + idx).style.color = color;
+    document.getElementById('val' + idx).innerText = value || '—';
+}
+
+function fillFertTable(tableId, obj) {
+    const el = document.getElementById(tableId);
+    el.innerHTML = '';
+    Object.entries(obj).forEach(([k, v]) => {
+        el.innerHTML += `<tr><td>${k}</td><td>${v}</td></tr>`;
+    });
+    if (!Object.keys(obj).length) el.innerHTML = '<tr><td colspan="2" style="color:var(--text-muted)">No data</td></tr>';
+}
+
+function animateRing(pct, color) {
+    const circ = document.getElementById('ringCircle');
+    const circumference = 251.2;
+    circ.style.stroke = color;
+    setTimeout(() => {
+        circ.style.strokeDashoffset = circumference - (circumference * pct / 100);
+    }, 300);
+}
+
+function resetScan() {
+    document.getElementById('resCard').style.display  = 'none';
+    document.getElementById('thumbImg').style.display = 'none';
+    document.getElementById('fileIn').value = '';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function speakResult() {
+    if (!lastSpeak) { Swal.fire('No result yet', 'Please scan an image first.', 'info'); return; }
+    const u = new SpeechSynthesisUtterance(lastSpeak + ' Review the advisory panel for detailed recommendations.');
+    window.speechSynthesis.speak(u);
+}
+
+function downloadReport() {
+    if (!lastData) return;
+    const d = lastData;
+    let txt = `KRISHI AI — SOIL HEALTH REPORT\n${'='.repeat(50)}\n\n`;
+    txt += `Soil Type    : ${d.display_name || d.soil}\n`;
+    txt += `Confidence   : ${d.confidence}%\n`;
+    txt += `Generated On : ${new Date().toLocaleString('en-IN')}\n\n`;
+
+    txt += `SOIL PROFILE\n${'-'.repeat(30)}\n`;
+    const pr = d.profile || {};
+    txt += `pH Range          : ${pr.ph_range}\n`;
+    txt += `Texture           : ${pr.texture}\n`;
+    txt += `Organic Matter    : ${pr.organic_matter}\n`;
+    txt += `Water Retention   : ${pr.water_retention}\n`;
+    txt += `Drainage          : ${pr.drainage}\n`;
+    txt += `Key Deficiencies  : ${(pr.key_deficiencies||[]).join(', ')}\n\n`;
+
+    txt += `RECOMMENDED CROPS\n${'-'.repeat(30)}\n`;
+    (d.crops?.top_list || []).forEach(c => {
+        txt += `  • ${c.name} (${c.season}) — Yield: ${c.yield} — Suitability: ${c.suitability}%\n`;
+    });
+    txt += `\nIrrigation: ${d.crops?.irrigation || '—'}\n\n`;
+
+    txt += `FERTILIZER PLAN\n${'-'.repeat(30)}\n`;
+    const f = d.fertilizer || {};
+    txt += `Base Application:\n`;
+    Object.entries(f.base_application||{}).forEach(([k,v])=>txt+=`  ${k}: ${v}\n`);
+    txt += `\nTop Dressing:\n`;
+    Object.entries(f.top_dressing||{}).forEach(([k,v])=>txt+=`  ${k}: ${v}\n`);
+    txt += `\nOrganic Inputs:\n`;
+    Object.entries(f.organic_inputs||{}).forEach(([k,v])=>txt+=`  ${k}: ${v}\n`);
+    txt += `\nMicronutrients:\n`;
+    Object.entries(f.micronutrients||{}).forEach(([k,v])=>txt+=`  ${k}: ${v}\n`);
+    txt += `\nSchedule: ${f.schedule || '—'}\n\n`;
+
+    txt += `pH MANAGEMENT\n${'-'.repeat(30)}\n`;
+    const ph = d.ph_management || {};
+    txt += `If Acidic   : ${ph.if_acidic}\n`;
+    txt += `If Alkaline : ${ph.if_alkaline}\n\n`;
+
+    txt += `VERDICT\n${'-'.repeat(30)}\n`;
+    const v = d.verdict || {};
+    txt += `Productivity Index : ${v.productivity_index}/100\n`;
+    txt += `Annual Yield       : ${v.annual_yield}\n`;
+    txt += `Status             : ${v.status}\n`;
+    txt += `\n${v.health_verdict || ''}\n\n`;
+    txt += `${'='.repeat(50)}\nGenerated by KRISHI AI — AI-Powered Agricultural Intelligence\n`;
+
+    const blob = new Blob([txt], { type: 'text/plain' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href     = url;
+    a.download = `KrishiAI_SoilReport_${(d.display_name||d.soil).replace(/\s+/g,'_')}.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
+}
+</script>
+
+<script src="assets/kisaan.js"></script>
+</body>
+</html>

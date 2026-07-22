@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krishi AI - Government Welfare Ecosystem</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;500;800&family=Outfit:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- AOS CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- SweetAlert2 -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/style.css">
+    <style>
+        .scheme-card { padding: 40px; border-radius: 30px; border: 2px solid var(--glass-border); transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .scheme-card:hover { border-color: var(--primary); transform: scale(1.05); }
+        .benefit-badge { padding: 8px 16px; border-radius: 30px; background: rgba(0, 242, 254, 0.2); color: var(--primary); font-weight: 800; font-size: 0.85rem; }
+        .swal2-select { background-color: rgba(255,255,255,0.05) !important; color: #fff !important; border: 1px solid #00f2fe !important; border-radius: 8px !important; max-width: 90% !important; width: 90% !important; box-sizing: border-box !important; font-size: 1rem !important; padding: 15px !important; height: auto !important; margin: 25px auto !important; }
+        .swal2-select option { background-color: #121220; color: #fff; padding: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow" style="top: 0px; left: 0px; background: var(--secondary);"></div>
+
+    <div class="container" style="padding-top: 50px;">
+        <nav class="glass fade-in" data-aos="fade-down">
+            <div class="logo">KRISHI AI.</div>
+            <div class="nav-links">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="market.html">Market</a>
+                <a href="prediction.html">Prediction</a>
+            </div>
+        </nav>
+
+        <header style="margin-top: 60px; text-align: center;" data-aos="fade-up">
+            <h1 style="font-size: 3.5rem;">Govt. <span style="color: var(--secondary);">Support</span> Ecosystem.</h1>
+            <p style="color: var(--text-muted); font-size: 1.2rem; margin-top: 10px;">Comprehensive guide to administrative welfare schemes and financial aid for Indian farmers.</p>
+        </header>
+
+        <div class="card glass" style="margin-top: 40px; padding: 25px; text-align: center; border-bottom: 3px solid var(--primary);" data-aos="zoom-in">
+             <h2 style="font-size: 1.6rem;">Can't find what you're looking for?</h2>
+             <p style="color: var(--text-muted); margin-top: 10px; font-size: 1rem;">Use our AI eligibility checker to find personalized schemes for your landholding profile instantly.</p>
+             <button class="btn btn-primary" style="margin-top: 20px; font-size: 1rem; padding: 12px 28px;" id="eligHelp">Check Eligibility ⚡</button>
+        </div>
+
+        <div class="grid" id="schemesGrid" style="margin-top: 60px;">
+            <!-- Data will be loaded here -->
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+    
+    <script>
+        AOS.init({ once: true, duration: 800 });
+
+        fetch('http://localhost:8000/api/schemes/')
+            .then(res => res.json())
+            .then(data => {
+                const grid = document.getElementById('schemesGrid');
+                data.schemes.forEach((s, idx) => {
+                    const card = document.createElement('div');
+                    card.className = 'card glass scheme-card';
+                    card.setAttribute('data-aos', 'fade-up');
+                    card.setAttribute('data-aos-delay', (idx * 100).toString());
+                    card.innerHTML = `
+                        <h2 style="margin: 0 0 20px 0; font-size: 1.7rem; color: var(--primary);">${s.name}</h2>
+                        <h3 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 20px;">Benefit: ${s.benefit}</h3>
+                        <p style="color: var(--text-muted); line-height: 1.6;">${s.description}</p>
+                        <div style="margin-top: 30px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;">
+                             <div style="color: var(--secondary); font-weight: 800; font-size: 0.95rem;">
+                                 📍 Target: ${s.eligibility}
+                             </div>
+                             <a href="${s.url}" target="_blank" class="btn btn-primary" style="padding: 10px 20px; text-decoration: none; border-radius: 12px; margin-top: 15px;">Official Portal ↗</a>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+            });
+
+        document.getElementById('eligHelp').onclick = async () => {
+             const inputOptions = {
+                 'Financial Support & Income': 'I need direct financial assistance or regular income support.',
+                 'Crop Insurance & Weather Protection': 'I want insurance coverage against crop failure and calamities.',
+                 'Loans & Agricultural Credit': 'I need short-term loans for seeds, fertilizers, or equipment.',
+                 'Irrigation & Solar Water Pumps': 'I need subsidies or support for field irrigation and solar pumps.',
+                 'Selling Produce & Marketing': 'I want to sell my harvest online directly for better prices.',
+                 'Organic Farming Practices': 'I want to shift to organic farming and need financial handholding.',
+                 'Pension & Old Age Security': 'I am looking for a pension scheme for old-age financial security.',
+                 'Technology, Beekeeping & Drones': 'I want to use modernized tools (drones) or start scientific beekeeping.'
+             };
+
+             const { value: farmerNeed } = await Swal.fire({
+                 title: '<span style="color: #00f2fe;">AI Scheme Matcher 🤖</span>',
+                 input: 'select',
+                 inputOptions: inputOptions,
+                 inputPlaceholder: 'Select your primary requirement...',
+                 showCancelButton: true,
+                 confirmButtonText: 'Find Best Scheme ⚡',
+                 cancelButtonText: 'Cancel',
+                 confirmButtonColor: '#00f2fe',
+                 background: '#121220',
+                 color: '#ffffff',
+                 width: '700px',
+                 backdrop: 'rgba(0,0,0,0.85)',
+                 inputValidator: (value) => {
+                     return new Promise((resolve) => {
+                         if (value) { resolve(); }
+                         else { resolve('You need to select a category first.'); }
+                     });
+                 }
+             });
+
+             if (farmerNeed) {
+                 Swal.fire({
+                     title: '<span style="color: #00f2fe;">Analyzing...</span>',
+                     html: '<span style="color: #a0aec0;">Krishi AI is scanning Gov databases for your specific requirement...</span>',
+                     background: '#121220',
+                     color: '#ffffff',
+                     backdrop: 'rgba(0,0,0,0.85)',
+                     didOpen: () => Swal.showLoading()
+                 });
+                 
+                 fetch('http://localhost:8000/api/schemes/match', {
+                     method: 'POST',
+                     headers: { 'Content-Type': 'application/json' },
+                     body: JSON.stringify({ need: farmerNeed })
+                 })
+                 .then(r => r.json())
+                 .then(data => {
+                     Swal.fire({
+                         icon: 'success',
+                         title: `<span style="color: #a8ff78;">${data.recommended}</span>`,
+                         html: `
+                            <div style="text-align: left; margin-top: 15px;">
+                                <p style="color: #a0aec0; margin-bottom: 15px;"><strong>Why it matches:</strong> ${data.reason}</p>
+                                <hr style="border: 1px solid rgba(255,255,255,0.1); margin: 15px 0;">
+                                <h4 style="color: #00f2fe; margin-bottom: 8px;">Eligibility Criteria:</h4>
+                                <p style="font-size: 0.95rem; color: #fff;">${data.eligibility}</p>
+                                <hr style="border: 1px solid rgba(255,255,255,0.1); margin: 15px 0;">
+                                <h4 style="color: #a8ff78; margin-bottom: 8px;">Documents Required:</h4>
+                                <p style="font-size: 0.95rem; color: #fff;">${data.documents}</p>
+                                <hr style="border: 1px solid rgba(255,255,255,0.1); margin: 15px 0;">
+                                <h4 style="color: #4facfe; margin-bottom: 8px;">Next Steps:</h4>
+                                <p style="font-size: 0.95rem; color: #fff;">${data.next_steps}</p>
+                            </div>
+                         `,
+                         confirmButtonText: 'Got It!',
+                         confirmButtonColor: '#00f2fe',
+                         background: '#121220',
+                         color: '#ffffff',
+                         width: '650px',
+                         backdrop: 'rgba(0,0,0,0.85)'
+                     });
+                 }).catch(err => {
+                     Swal.fire({
+                         title: 'Error',
+                         text: 'Could not reach AI Matcher. Please try again.',
+                         icon: 'error',
+                         background: '#121220',
+                         color: '#ffffff',
+                         confirmButtonColor: '#00f2fe',
+                         backdrop: 'rgba(0,0,0,0.85)'
+                     });
+                 });
+             }
+        }
+    </script>
+
+<script src="assets/kisaan.js"></script>
+</body>
+</html>

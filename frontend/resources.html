@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krishi AI - Global Resource Ecosystem</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;500;800&family=Outfit:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- AOS CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- SweetAlert2 -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/style.css">
+    <style>
+        .grid-broad { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; }
+    </style>
+</head>
+<body class="fade-in">
+
+    <div class="bg-glow" style="top: 0; left: 0; background: var(--primary); opacity: 0.1;"></div>
+
+    <div class="container" style="padding-top: 50px;">
+        <nav class="glass fade-in" data-aos="fade-down">
+            <div class="logo">KRISHI AI.</div>
+            <div class="nav-links">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="market.html">Market</a>
+                <a href="prediction.html">Growth Hub</a>
+            </div>
+        </nav>
+
+        <header style="margin-top: 60px; text-align: center;" data-aos="fade-up">
+            <h1 style="font-size: 3.5rem; letter-spacing: -2px;">Community <span style="color: var(--primary);">Assets</span>.</h1>
+            <p style="color: var(--text-muted); font-size: 1.25rem; margin-top: 10px;">Equipment rental, biomass exchange, and distributed support systems.</p>
+        </header>
+
+        <div class="card glass" style="margin-top: 50px; padding: 30px; border-left: 4px solid var(--primary); text-align: center;" data-aos="zoom-in">
+             <h3 style="color: var(--primary); margin-bottom: 15px; font-size: 1.6rem;">Smart Equipment Recommender</h3>
+             <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 1.05rem;">Quickly select your current farming phase below, or use our AI eligibility checker to find personalized precision equipment recommendations perfectly suited for your specific crop and farm size.</p>
+             <div style="display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-bottom: 25px;">
+                 <button class="btn glass" style="border-color: #00f2fe; color: #00f2fe;" onclick="fetchEquipment('Land Preparation & Plowing')">Tillage & Plowing</button>
+                 <button class="btn glass" style="border-color: #a8ff78; color: #a8ff78;" onclick="fetchEquipment('Sowing & Seeding')">Sowing & Seeding</button>
+                 <button class="btn glass" style="border-color: #f6d365; color: #f6d365;" onclick="fetchEquipment('Watering and Irrigation')">Irrigation</button>
+                 <button class="btn glass" style="border-color: #ff9a9e; color: #ff9a9e;" onclick="fetchEquipment('Crop Harvesting')">Harvesting</button>
+                 <button class="btn glass" style="border-color: #c2e9fb; color: #c2e9fb;" onclick="fetchEquipment('Pest control & spraying')">Crop Protection</button>
+             </div>
+             <hr style="border: 1px solid rgba(255,255,255,0.05); margin-bottom: 25px; width: 50%; margin-left: auto; margin-right: auto;">
+             <button class="btn btn-primary" style="font-size: 1.1rem; padding: 12px 30px;" onclick="openAIRecommender()">Find Custom Perfect Equipment 🤖</button>
+        </div>
+
+        <h2 style="margin-top: 60px; margin-bottom: 30px;" data-aos="fade-right">🚜 Recommended Equipment</h2>
+        <div class="grid-broad" id="eqGrid">
+             <!-- Equipment Data -->
+        </div>
+
+        <h2 style="margin-top: 80px; margin-bottom: 30px;" data-aos="fade-right">♻️ Biomass & Waste Exchange</h2>
+        <div class="grid-broad" id="wasteGrid">
+             <!-- Waste Data -->
+        </div>
+
+        <div class="card glass" style="margin-top: 60px; padding: 30px; border-left: 4px solid #78ffd6; text-align: center;" data-aos="zoom-in">
+             <h3 style="color: #78ffd6; margin-bottom: 15px; font-size: 1.6rem;">Publish Biomass for Sale</h3>
+             <p style="color: var(--text-muted); margin-bottom: 25px; font-size: 1.05rem;">Turn your agricultural waste into income. List your leftover biomass securely into the global exchange and commercial buyers will instantly connect and bid for it.</p>
+             <button class="btn glass" style="border-color: #78ffd6; color: #78ffd6; font-size: 1.1rem; padding: 12px 30px;" onclick="addWasteListing()">Sell Your Crop Waste ♻️</button>
+        </div>
+
+        <footer style="margin-top: 100px; padding: 50px; text-align: center; color: #444;">
+             Sustainable Deep Tech Ecosystem • Krishi AI v2.4
+        </footer>
+    </div>
+
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+    
+    <script>
+        AOS.init({ once: true, duration: 800 });
+
+        // Dynamic Equipment Fetch
+        function fetchEquipment(task) {
+            const grid = document.getElementById('eqGrid');
+            grid.innerHTML = '<div style="color: var(--text-muted); padding: 20px;">Scanning AI Equipment Hub...</div>';
+            
+            fetch('http://localhost:8000/api/resources/equipment', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ task: task })
+            }).then(r => r.json()).then(data => {
+                grid.innerHTML = '';
+                const displayTask = task === 'default' ? 'PRO EQUIPMENT' : 'AI MATCH';
+                data.equipment.forEach((e, idx) => {
+                    grid.innerHTML += `
+                    <div class="card glass resource-card" data-aos="fade-up" data-aos-delay="${idx*100}">
+                        <div>
+                            <span class="badge">${displayTask}</span>
+                            <h3 style="color: var(--primary); margin-top: 10px; font-size: 1.4rem;">${e.name}</h3>
+                            <p style="color: #a0aec0; margin-top: 10px; font-size: 0.95rem; line-height: 1.5;"><i>"${e.reason}"</i></p>
+                            <hr style="border: 1px solid rgba(255,255,255,0.05); margin: 15px 0;">
+                            <p style="color: var(--text-muted); font-size: 0.9rem;">📍 ${e.location}</p>
+                        </div>
+                        <div style="margin-top: 25px;">
+                            <div style="font-size: 1.6rem; font-weight: 800; color: #fff;">${e.price}</div>
+                            <p style="color: var(--secondary); font-size: 0.9rem; margin-top: 5px;">${e.availability}</p>
+                            <button class="btn btn-primary" style="width: 100%; margin-top: 20px; font-size: 1rem; padding: 10px;" onclick="bookEquipment('${e.name}', '${e.price}')">Proceed to Booking</button>
+                        </div>
+                    </div>`;
+                });
+            }).catch(err => {
+                grid.innerHTML = '<div style="color: #ff5e5e; padding: 20px;">Error connecting to Equipment AI.</div>';
+            });
+        }
+        
+        // Initial Default Fetch
+        fetchEquipment("default");
+
+        async function openAIRecommender() {
+             const { value: formValues } = await Swal.fire({
+                 title: '<span style="color: #00f2fe;">AI Recommender 🤖</span>',
+                 html: `
+                    <label style="color: #fff; display: block; text-align: left; margin-bottom: 5px; font-size: 0.95rem;">1. Select Crop Category</label>
+                    <select id="rec-crop" class="glass-input" style="width: 100%; padding: 10px; margin-bottom: 15px; background: rgba(255,255,255,0.05); color: #fff; border: 1px solid var(--primary); border-radius: 8px;">
+                        <option value="Cereals (Rice, Wheat, Maize)" style="background: #121220;">Cereals (Rice, Wheat, Maize)</option>
+                        <option value="Cash Crops (Cotton, Sugarcane)" style="background: #121220;">Cash Crops (Cotton, Sugarcane)</option>
+                        <option value="Horticulture (Fruits, Vegetables)" style="background: #121220;">Horticulture (Fruits, Vegetables)</option>
+                        <option value="Oilseeds (Soyabean, Groundnut)" style="background: #121220;">Oilseeds (Soyabean, Groundnut)</option>
+                    </select>
+                    
+                    <label style="color: #fff; display: block; text-align: left; margin-bottom: 5px; font-size: 0.95rem;">2. Select Farm Size</label>
+                    <select id="rec-size" class="glass-input" style="width: 100%; padding: 10px; margin-bottom: 15px; background: rgba(255,255,255,0.05); color: #fff; border: 1px solid var(--primary); border-radius: 8px;">
+                        <option value="Marginal (Less than 1 Acre)" style="background: #121220;">Marginal (Less than 1 Acre)</option>
+                        <option value="Small (1 to 5 Acres)" style="background: #121220;">Small (1 to 5 Acres)</option>
+                        <option value="Medium (5 to 10 Acres)" style="background: #121220;">Medium (5 to 10 Acres)</option>
+                        <option value="Large (More than 10 Acres)" style="background: #121220;">Large (More than 10 Acres)</option>
+                    </select>
+                    
+                    <label style="color: #fff; display: block; text-align: left; margin-bottom: 5px; font-size: 0.95rem;">3. Select Specific Task</label>
+                    <select id="rec-task" class="glass-input" style="width: 100%; padding: 10px; margin-bottom: 15px; background: rgba(255,255,255,0.05); color: #fff; border: 1px solid var(--primary); border-radius: 8px;">
+                        <option value="Land Preparation & Tillage" style="background: #121220;">Land Preparation & Tillage</option>
+                        <option value="Sowing & Seeding" style="background: #121220;">Sowing & Seeding</option>
+                        <option value="Irrigation & Water Management" style="background: #121220;">Irrigation & Water Management</option>
+                        <option value="Pest Control & Spraying" style="background: #121220;">Pest Control & Spraying</option>
+                        <option value="Harvesting & Threshing" style="background: #121220;">Harvesting & Threshing</option>
+                        <option value="Post-Harvest Management" style="background: #121220;">Post-Harvest Management</option>
+                    </select>
+                 `,
+                 focusConfirm: false,
+                 showCancelButton: true,
+                 confirmButtonText: 'Analyze & Find ⚡',
+                 confirmButtonColor: '#00f2fe',
+                 background: '#121220',
+                 color: '#fff',
+                 backdrop: 'rgba(0,0,0,0.85)',
+                 preConfirm: () => {
+                     return {
+                         crop: document.getElementById('rec-crop').value,
+                         size: document.getElementById('rec-size').value,
+                         task: document.getElementById('rec-task').value
+                     }
+                 }
+             });
+
+             if (formValues && formValues.crop && formValues.task) {
+                 const reqString = `Crop: ${formValues.crop}, Size: ${formValues.size}, Task: ${formValues.task}`;
+                 fetchEquipment(reqString);
+             } else if (formValues) {
+                 Swal.fire({
+                     icon: 'error',
+                     title: 'Incomplete',
+                     text: 'Please provide at least your crop and current task.',
+                     background: '#121220',
+                     color: '#fff',
+                     confirmButtonColor: '#00f2fe'
+                 });
+             }
+        }
+
+        // Rich Booking Flow
+        async function bookEquipment(eqName, eqPrice) {
+            const { value: formValues } = await Swal.fire({
+                title: `<span style="color: var(--primary);">Secure Booking</span>`,
+                html: `
+                    <div style="text-align: left; margin-bottom: 20px; background: rgba(0,242,254,0.1); padding: 10px; border-radius: 10px;">
+                        <h4 style="color: #fff; margin: 0;">${eqName}</h4>
+                        <p style="color: var(--secondary); font-size: 0.9rem; margin: 5px 0 0 0;">Rate: ${eqPrice}</p>
+                    </div>
+                    <label style="color: #fff; display: block; text-align: left; margin-bottom: 5px; font-size: 0.9rem;">Requirement Duration (Hours/Days)</label>
+                    <input id="swal-duration" class="swal2-input glass-input" style="width: 80%; background: rgba(255,255,255,0.05); color: #fff; margin-top: 0; margin-bottom: 15px;" placeholder="e.g., 5 Hours">
+                    
+                    <label style="color: #fff; display: block; text-align: left; margin-bottom: 5px; font-size: 0.9rem;">Farm Area (Acres)</label>
+                    <input id="swal-area" type="number" class="swal2-input glass-input" style="width: 80%; background: rgba(255,255,255,0.05); color: #fff; margin-top: 0; margin-bottom: 15px;" placeholder="e.g., 2 Acres">
+                    
+                    <label style="color: #fff; display: block; text-align: left; margin-bottom: 5px; font-size: 0.9rem;">Required By Date</label>
+                    <input type="date" id="swal-date" class="swal2-input glass-input" style="width: 80%; background: rgba(255,255,255,0.05); color: #fff; margin-top: 0;">
+                `,
+                focusConfirm: false,
+                showCancelButton: true,
+                confirmButtonText: 'Submit Request ✓',
+                confirmButtonColor: '#00f2fe',
+                background: '#121220',
+                color: '#fff',
+                backdrop: 'rgba(0,0,0,0.85)',
+                preConfirm: () => {
+                    return {
+                        duration: document.getElementById('swal-duration').value,
+                        area: document.getElementById('swal-area').value,
+                        date: document.getElementById('swal-date').value
+                    }
+                }
+            });
+
+            if (formValues && formValues.duration && formValues.date) {
+                Swal.fire({
+                    icon: 'success',
+                    title: '<span style="color: #a8ff78;">Request Sent to Grid!</span>',
+                    html: `<p style="color: #a0aec0;">Your verified requirement profile for <b>${eqName}</b> has been broadcasted to nearby providers for dispatch on <b>${formValues.date}</b>.</p>`,
+                    background: '#121220',
+                    color: '#fff',
+                    confirmButtonColor: '#00f2fe',
+                    backdrop: 'rgba(0,0,0,0.85)'
+                });
+            } else if (formValues) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: '<span style="color: #ffcc00;">Incomplete Request</span>',
+                    text: 'Please fill out the timeline and farm coverage area to find an accurate provider.',
+                    background: '#121220',
+                    color: '#fff',
+                    confirmButtonColor: '#00f2fe',
+                    backdrop: 'rgba(0,0,0,0.85)'
+                });
+            }
+        }
+
+        // Biomass & Waste Exchange Logic
+        function fetchWaste(profile) {
+            const grid = document.getElementById('wasteGrid');
+            grid.innerHTML = '<div style="color: var(--text-muted); padding: 20px;">Scanning Regional Refineries and High-Value Buyers...</div>';
+            
+            fetch('http://localhost:8000/api/resources/waste', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ profile: profile })
+            }).then(r => r.json()).then(data => {
+                grid.innerHTML = '';
+                data.waste.forEach((w, idx) => {
+                    const urgencyColor = w.urgency && w.urgency.toLowerCase().includes('high') ? '#ff5e5e' : '#f6d365';
+                    const tradeBadge = w.trade_type === 'BUY' 
+                        ? `<span class="badge" style="background: rgba(120,255,214,0.1); color: #78ffd6; border: 1px solid rgba(120,255,214,0.3);">🏭 BUY REQUEST</span>`
+                        : `<span class="badge" style="background: rgba(255,168,120,0.1); color: #ffa878; border: 1px solid rgba(255,168,120,0.3);">🧑‍🌾 SELL LISTING</span>`;
+                    const entityIcon = w.trade_type === 'BUY' ? '🏭 Buyer:' : '👤 Seller:';
+                    const btnLabel = w.trade_type === 'BUY' ? 'Sell Your Waste' : 'Make an Offer';
+                    
+                    grid.innerHTML += `
+                    <div class="card glass resource-card" data-aos="fade-up" data-aos-delay="${idx*100}">
+                        <div>
+                            ${tradeBadge}
+                            <span style="float: right; color: ${urgencyColor}; font-size: 0.75rem; font-weight: 800; margin-top: 6px; letter-spacing: 1px;">${w.urgency ? w.urgency.toUpperCase() + ' URGENCY' : ''}</span>
+                            <h3 style="color: #78ffd6; margin-top: 15px; font-size: 1.4rem;">${w.type}</h3>
+                            <p style="color: #ffffff; font-size: 1rem; margin-top: 10px; font-weight: 500;">${entityIcon} ${w.entity}</p>
+                            <p style="color: #a0aec0; font-size: 0.9rem; margin-top: 10px; line-height: 1.5;"><i>${w.usage}</i></p>
+                            <hr style="border: 1px solid rgba(255,255,255,0.05); margin: 15px 0;">
+                            <p style="color: var(--text-muted); font-size: 0.9rem;">📦 ${w.quantity}</p>
+                        </div>
+                        <div style="margin-top: 25px;">
+                            <div style="font-size: 1.6rem; font-weight: 800; color: #fff;">${w.price}</div>
+                            <p style="color: var(--primary); font-size: 0.9rem; margin-top: 5px;">Status: ${w.status}</p>
+                            <button class="btn glass" style="width: 100%; margin-top: 20px; border-color: #78ffd6; color: #78ffd6; font-size: 1rem; padding: 10px; transition: 0.3s;" onmouseover="this.style.background='rgba(120,255,214,0.1)'" onmouseout="this.style.background='transparent'" onclick="Swal.fire({title: 'Engaged!', text: 'Securely routing you to ${w.entity}...', icon: 'success', background: '#121220', color: '#fff', confirmButtonColor: '#78ffd6'})">${btnLabel}</button>
+                        </div>
+                    </div>`;
+                });
+            }).catch(err => {
+                grid.innerHTML = '<div style="color: #ff5e5e; padding: 20px;">Error connecting to Buyer Network.</div>';
+            });
+        }
+        
+        // Initial Fetch
+        fetchWaste("default");
+
+        async function addWasteListing() {
+             const { value: formValues } = await Swal.fire({
+                 title: '<span style="color: #78ffd6;">Publish Biomass ♻️</span>',
+                 html: `
+                     <label style="color: #fff; display: block; text-align: left; margin-bottom: 5px; font-size: 0.95rem;">1. Select Biomass Type</label>
+                     <select id="w-type" class="glass-input" style="width: 100%; padding: 10px; margin-bottom: 15px; background: rgba(255,255,255,0.05); color: #fff; border: 1px solid #78ffd6; border-radius: 8px;">
+                         <option value="Rice Husk / Parali" style="background: #121220;">Rice Husk / Parali</option>
+                         <option value="Wheat Stalks / Stubble" style="background: #121220;">Wheat Stalks / Stubble</option>
+                         <option value="Sugarcane Bagasse" style="background: #121220;">Sugarcane Bagasse</option>
+                         <option value="Cotton Stalks" style="background: #121220;">Cotton Stalks</option>
+                         <option value="Cattle Dung" style="background: #121220;">Cattle Dung / Poultry Manure</option>
+                         <option value="Maize Cobs" style="background: #121220;">Maize Cobs / Corn Stalks</option>
+                     </select>
+                     
+                     <label style="color: #fff; display: block; text-align: left; margin-bottom: 5px; font-size: 0.95rem;">2. Select Quantity</label>
+                     <select id="w-qty" class="glass-input" style="width: 100%; padding: 10px; margin-bottom: 15px; background: rgba(255,255,255,0.05); color: #fff; border: 1px solid #78ffd6; border-radius: 8px;">
+                         <option value="Under 1 Ton" style="background: #121220;">Under 1 Ton</option>
+                         <option value="1 to 5 Tons" style="background: #121220;">1 to 5 Tons</option>
+                         <option value="5 to 20 Tons" style="background: #121220;">5 to 20 Tons</option>
+                         <option value="20+ Tons (Bulk Cargo)" style="background: #121220;">20+ Tons (Bulk Cargo)</option>
+                     </select>
+                     
+                     <p style="color: var(--text-muted); font-size: 0.85rem; text-align: left; margin-top: 15px;"><i>Our AI will instantly generate an optimal market description and strategically synthesize a competitive price for your exact request!</i></p>
+                 `,
+                 focusConfirm: false,
+                 showCancelButton: true,
+                 confirmButtonText: 'Generate Listing 🤖',
+                 confirmButtonColor: '#78ffd6',
+                 background: '#121220',
+                 color: '#fff',
+                 backdrop: 'rgba(0,0,0,0.85)',
+                 preConfirm: () => {
+                     return {
+                         type: document.getElementById('w-type').value,
+                         qty: document.getElementById('w-qty').value
+                     }
+                 }
+             });
+
+             if (formValues && formValues.type) {
+                 Swal.fire({
+                     title: '<span style="color: #78ffd6;">AI Synthesizing...</span>',
+                     html: '<span style="color: #a0aec0;">Generating professional market description and fetching current regional rates...</span>',
+                     background: '#121220',
+                     color: '#ffffff',
+                     backdrop: 'rgba(0,0,0,0.85)',
+                     didOpen: () => Swal.showLoading()
+                 });
+
+                 fetch('http://localhost:8000/api/resources/waste_sell', {
+                     method: 'POST',
+                     headers: { 'Content-Type': 'application/json' },
+                     body: JSON.stringify({ crop_type: formValues.type, quantity: formValues.qty })
+                 }).then(r => r.json()).then(w => {
+                     const grid = document.getElementById('wasteGrid');
+                     const customCard = `
+                        <div class="card glass resource-card" style="border: 2px solid #a8ff78;" data-aos="zoom-in">
+                            <div>
+                                <span class="badge" style="background: rgba(168,255,120,0.2); color: #a8ff78; border: 1px solid #a8ff78;">🧑‍🌾 SECURED LISTING</span>
+                                <span style="float: right; color: #a8ff78; font-size: 0.75rem; font-weight: 800; margin-top: 6px; letter-spacing: 1px;">ACTIVE</span>
+                                <h3 style="color: #78ffd6; margin-top: 15px; font-size: 1.4rem;">${w.type}</h3>
+                                <p style="color: #ffffff; font-size: 1rem; margin-top: 10px; font-weight: 500;">👤 Seller: ${w.entity}</p>
+                                <p style="color: #a0aec0; font-size: 0.9rem; margin-top: 10px; line-height: 1.5;"><i>${w.usage}</i></p>
+                                <hr style="border: 1px solid rgba(255,255,255,0.05); margin: 15px 0;">
+                                <p style="color: var(--text-muted); font-size: 0.9rem;">📦 ${w.quantity}</p>
+                            </div>
+                            <div style="margin-top: 20px;">
+                                <div style="font-size: 1.6rem; font-weight: 800; color: #fff;">${w.price}</div>
+                                <p style="color: var(--primary); font-size: 0.9rem; margin-top: 5px;">Status: Waiting for Bidders</p>
+                                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                                    <button class="btn glass" style="flex: 1; border-color: #f6d365; color: #f6d365; font-size: 1rem; padding: 10px; transition: 0.3s;" onmouseover="this.style.background='rgba(246,211,101,0.1)'" onmouseout="this.style.background='transparent'" onclick="editListing(this, '${w.type}', '${w.quantity}')">Edit Listing</button>
+                                    <button class="btn glass" style="flex: 1; border-color: #ff5e5e; color: #ff5e5e; font-size: 1rem; padding: 10px; transition: 0.3s;" onmouseover="this.style.background='rgba(255,94,94,0.1)'" onmouseout="this.style.background='transparent'" onclick="this.parentElement.parentElement.parentElement.remove(); Swal.fire({title:'Deleted', text:'Listing offlined.', icon:'success', background:'#121220', color:'#fff', confirmButtonColor: '#78ffd6'})">Cancel Listing</button>
+                                </div>
+                            </div>
+                        </div>`;
+                     grid.innerHTML = customCard + grid.innerHTML;
+                     
+                     Swal.fire({
+                         icon: 'success',
+                         title: '<span style="color: #78ffd6;">Published Globally!</span>',
+                         html: '<p style="color: #a0aec0;">Your fully optimized AI-powered biomass listing is now visibly live.</p>',
+                         background: '#121220',
+                         color: '#fff',
+                         confirmButtonColor: '#78ffd6',
+                         backdrop: 'rgba(0,0,0,0.85)'
+                     });
+                     window.scrollTo({ top: grid.offsetTop - 100, behavior: 'smooth' });
+                 }).catch(err => {
+                     Swal.fire({
+                         icon: 'error',
+                         title: 'Network Error',
+                         text: 'Failed to synthesize market listing securely. Please try again.',
+                         background: '#121220',
+                         color: '#fff',
+                         confirmButtonColor: '#ff5e5e'
+                     });
+                 });
+             } else if (formValues) {
+                 Swal.fire({
+                     icon: 'error',
+                     title: 'Incomplete',
+                     text: 'Please select both crop type and quantity.',
+                     background: '#121220',
+                     color: '#fff',
+                     confirmButtonColor: '#78ffd6'
+                 });
+             }
+        }
+
+        async function editListing(btn, currentType, currentQty) {
+             const { value: formValues } = await Swal.fire({
+                 title: '<span style="color: #f6d365;">Edit Listing ✏️</span>',
+                 html: `
+                     <p style="color: #a0aec0; margin-bottom: 20px; font-size: 0.95rem;">Update your active biomass listing parameters.</p>
+                     
+                     <label style="color: #fff; display: block; text-align: left; margin-bottom: 5px; font-size: 0.95rem;">1. Select Biomass Type</label>
+                     <select id="e-type" class="glass-input" style="width: 100%; padding: 10px; margin-bottom: 15px; background: rgba(255,255,255,0.05); color: #fff; border: 1px solid #f6d365; border-radius: 8px;">
+                         <option value="Rice Husk / Parali" ${currentType.includes('Rice')?'selected':''}>Rice Husk / Parali</option>
+                         <option value="Wheat Stalks / Stubble" ${currentType.includes('Wheat')?'selected':''}>Wheat Stalks / Stubble</option>
+                         <option value="Sugarcane Bagasse" ${currentType.includes('Sugarcane')?'selected':''}>Sugarcane Bagasse</option>
+                         <option value="Cotton Stalks" ${currentType.includes('Cotton')?'selected':''}>Cotton Stalks</option>
+                         <option value="Cattle Dung" ${currentType.includes('Cattle')?'selected':''}>Cattle Dung / Poultry Manure</option>
+                         <option value="Maize Cobs" ${currentType.includes('Maize')?'selected':''}>Maize Cobs / Corn Stalks</option>
+                     </select>
+                     
+                     <label style="color: #fff; display: block; text-align: left; margin-bottom: 5px; font-size: 0.95rem;">2. Select Quantity</label>
+                     <select id="e-qty" class="glass-input" style="width: 100%; padding: 10px; margin-bottom: 15px; background: rgba(255,255,255,0.05); color: #fff; border: 1px solid #f6d365; border-radius: 8px;">
+                         <option value="Under 1 Ton" ${currentQty.includes('Under')?'selected':''}>Under 1 Ton</option>
+                         <option value="1 to 5 Tons" ${currentQty.includes('1 to 5')?'selected':''}>1 to 5 Tons</option>
+                         <option value="5 to 20 Tons" ${currentQty.includes('5 to 20')?'selected':''}>5 to 20 Tons</option>
+                         <option value="20+ Tons (Bulk Cargo)" ${currentQty.includes('20+')?'selected':''}>20+ Tons (Bulk Cargo)</option>
+                     </select>
+                 `,
+                 focusConfirm: false,
+                 showCancelButton: true,
+                 confirmButtonText: 'Update Listing JSON ⚡',
+                 confirmButtonColor: '#f6d365',
+                 background: '#121220',
+                 color: '#fff',
+                 backdrop: 'rgba(0,0,0,0.85)',
+                 preConfirm: () => {
+                     return {
+                         type: document.getElementById('e-type').value,
+                         qty: document.getElementById('e-qty').value
+                     }
+                 }
+             });
+
+             if (formValues && formValues.type) {
+                 Swal.fire({
+                     title: '<span style="color: #f6d365;">Updating AI Profile...</span>',
+                     html: '<span style="color: #a0aec0;">Generating new market description and fetching current rates...</span>',
+                     background: '#121220', color: '#ffffff',
+                     backdrop: 'rgba(0,0,0,0.85)',
+                     didOpen: () => Swal.showLoading()
+                 });
+
+                 fetch('http://localhost:8000/api/resources/waste_sell', {
+                     method: 'POST',
+                     headers: { 'Content-Type': 'application/json' },
+                     body: JSON.stringify({ crop_type: formValues.type, quantity: formValues.qty })
+                 }).then(r => r.json()).then(w => {
+                     const updatedCard = `
+                        <div>
+                            <span class="badge" style="background: rgba(168,255,120,0.2); color: #a8ff78; border: 1px solid #a8ff78;">🧑‍🌾 SECURED LISTING (UPDATED)</span>
+                            <span style="float: right; color: #a8ff78; font-size: 0.75rem; font-weight: 800; margin-top: 6px; letter-spacing: 1px;">ACTIVE</span>
+                            <h3 style="color: #78ffd6; margin-top: 15px; font-size: 1.4rem;">${w.type}</h3>
+                            <p style="color: #ffffff; font-size: 1rem; margin-top: 10px; font-weight: 500;">👤 Seller: ${w.entity}</p>
+                            <p style="color: #a0aec0; font-size: 0.9rem; margin-top: 10px; line-height: 1.5;"><i>${w.usage}</i></p>
+                            <hr style="border: 1px solid rgba(255,255,255,0.05); margin: 15px 0;">
+                            <p style="color: var(--text-muted); font-size: 0.9rem;">📦 ${w.quantity}</p>
+                        </div>
+                        <div style="margin-top: 20px;">
+                            <div style="font-size: 1.6rem; font-weight: 800; color: #fff;">${w.price}</div>
+                            <p style="color: var(--primary); font-size: 0.9rem; margin-top: 5px;">Status: Waiting for Bidders</p>
+                            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                                <button class="btn glass" style="flex: 1; border-color: #f6d365; color: #f6d365; font-size: 1rem; padding: 10px; transition: 0.3s;" onmouseover="this.style.background='rgba(246,211,101,0.1)'" onmouseout="this.style.background='transparent'" onclick="editListing(this, '${w.type}', '${w.quantity}')">Edit Listing</button>
+                                <button class="btn glass" style="flex: 1; border-color: #ff5e5e; color: #ff5e5e; font-size: 1rem; padding: 10px; transition: 0.3s;" onmouseover="this.style.background='rgba(255,94,94,0.1)'" onmouseout="this.style.background='transparent'" onclick="this.parentElement.parentElement.parentElement.remove(); Swal.fire({title:'Deleted', text:'Listing offlined.', icon:'success', background:'#121220', color:'#fff', confirmButtonColor: '#78ffd6'})">Cancel Listing</button>
+                            </div>
+                        </div>`;
+                     btn.parentElement.parentElement.parentElement.innerHTML = updatedCard;
+                     
+                     Swal.fire({
+                         icon: 'success', title: '<span style="color: #f6d365;">Updated Successfully!</span>',
+                         html: '<p style="color: #a0aec0;">Your biomass listing has been refreshed globally.</p>',
+                         background: '#121220', color: '#fff', confirmButtonColor: '#f6d365', backdrop: 'rgba(0,0,0,0.85)'
+                     });
+                 }).catch(err => Swal.fire({icon: 'error', title: 'Network Error', text: 'Failed to update.', background: '#121220'}));
+             }
+        }
+
+    </script>
+
+<script src="assets/kisaan.js"></script>
+</body>
+</html>

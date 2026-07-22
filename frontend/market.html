@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krishi AI - Global Market Dynamics</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;500;800&family=Outfit:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- AOS CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- SweetAlert2 -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="assets/style.css">
+    <style>
+        table { width: 100%; border-collapse: collapse; margin-top: 30px; }
+        th, td { padding: 25px; text-align: left; border-bottom: 1px solid var(--glass-border); }
+        th { font-size: 0.85rem; letter-spacing: 2px; color: var(--text-muted); font-weight: 800; }
+        .mandi-name { font-weight: 700; color: var(--secondary); display: block; }
+        .mandi-loc { font-size: 0.85rem; color: var(--text-muted); }
+        tr:hover { background: rgba(255, 255, 255, 0.05); }
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow" style="bottom: 0px; right: 0px; background: var(--primary);"></div>
+
+    <div class="container" style="padding-top: 50px;">
+        <nav class="glass fade-in" data-aos="fade-down">
+            <div class="logo">KRISHI AI.</div>
+            <div class="nav-links">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="detection.html">Detection</a>
+                <a href="schemes.html">Schemes</a>
+            </div>
+        </nav>
+
+        <header style="margin-top: 60px; text-align: center;" data-aos="fade-up">
+            <h1 style="font-size: 3.5rem;">Market <span style="color: var(--secondary);">Intelligence</span>.</h1>
+            <p style="color: var(--text-muted); font-size: 1.2rem; margin-top: 10px;">Aggregated price data from all major Indian markets with real-time volatility analysis.</p>
+        </header>
+
+        <div class="grid" style="margin-top: 50px;">
+            <div class="card glass" data-aos="fade-right">
+                <h3>Price Prediction & Demand</h3>
+                <p style="color: var(--text-muted);">How crop prices are likely to change based on current buyer demand.</p>
+                <div id="sentimentValue" class="stat-value" style="color: var(--secondary); font-size: 2.2rem; margin-top: 15px;">Loading AI... ⏳</div>
+                <div id="sentimentLabel" class="stat-label" style="font-weight: bold; font-size: 1.1rem; margin-top: 10px;">Analyzing current market trends...</div>
+            </div>
+            <div class="card glass" data-aos="fade-left">
+                <h3>Local vs. Big City Prices</h3>
+                <p style="color: var(--text-muted);">Compare what you'd get locally vs selling in major city markets (₹ per quintal).</p>
+                <div style="position: relative; height: 220px; margin-top: 20px;">
+                    <canvas id="marketChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="card glass" style="margin-top: 40px; padding: 0;" data-aos="fade-up">
+            <table>
+                <thead>
+                    <tr>
+                        <th>CROP</th>
+                        <th>LOC / MANDI</th>
+                        <th>PRICE (₹ / QUINTAL)</th>
+                        <th>DYNAMIC TREND</th>
+                    </tr>
+                </thead>
+                <tbody id="marketBody">
+                    <!-- Data will be loaded here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+    
+    <script>
+        AOS.init({ once: true, duration: 800 });
+
+        fetch('http://localhost:8000/api/market/prices')
+            .then(res => res.json())
+            .then(data => {
+                const body = document.getElementById('marketBody');
+                data.prices.forEach((p, idx) => {
+                    const tr = document.createElement('tr');
+                    tr.setAttribute('data-aos', 'fade-up');
+                    tr.setAttribute('data-aos-delay', (idx * 50).toString());
+                    tr.innerHTML = `
+                        <td style="font-weight: 800; font-size: 1.2rem; color: var(--primary);">${p.crop}</td>
+                        <td>
+                            <span class="mandi-name">${p.mandi.split(',')[0]}</span>
+                            <span class="mandi-loc">${p.mandi.split(',')[1] || ''}</span>
+                        </td>
+                        <td style="font-family: 'Unbounded'; font-weight: 900; font-size: 1.3rem;">₹${p.price_per_quintal}</td>
+                        <td style="color: ${p.color == 'green' ? 'var(--secondary)' : '#ff5e5e'}; font-weight: bold;">${p.trend}</td>
+                    `;
+                    body.appendChild(tr);
+                });
+            });
+
+        // Fetch dynamic Gemini Sentiment
+        fetch('http://localhost:8000/api/market/sentiment')
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('sentimentValue').innerText = data.headline;
+                document.getElementById('sentimentLabel').innerText = data.advice;
+                if (data.headline && data.headline.toLowerCase().includes('down')) {
+                    document.getElementById('sentimentValue').style.color = '#ff5e5e';
+                }
+            }).catch(e => {
+                document.getElementById('sentimentValue').innerText = "Prices Going Up! 📈";
+                document.getElementById('sentimentLabel').innerText = "Wheat prices expected to rise next week. Good time to hold stock.";
+            });
+
+        // Chart.js global context & Dynamic Gemini Compare Data
+        fetch('http://localhost:8000/api/market/compare')
+            .then(res => res.json())
+            .then(data => {
+                const mctx = document.getElementById('marketChart').getContext('2d');
+                new Chart(mctx, {
+                    type: 'bar',
+                    data: {
+                        labels: data.labels,
+                        datasets: [{
+                            label: 'Local Mandi (₹)',
+                            data: data.local,
+                            backgroundColor: '#4facfe',
+                            borderRadius: 6
+                        }, {
+                            label: 'Big City Market (₹)',
+                            data: data.city,
+                            backgroundColor: '#a8ff78',
+                            borderRadius: 6
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { 
+                            legend: { 
+                                display: true,
+                                labels: { color: '#a0aec0', font: { family: 'Outfit', size: 12 } }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return context.dataset.label.replace(' (₹)', '') + ': ₹' + context.raw;
+                                    }
+                                }
+                            }
+                        },
+                        scales: { 
+                            y: { 
+                                display: true, 
+                                grid: { color: 'rgba(255,255,255,0.05)' },
+                                ticks: { color: '#a0aec0', stepSize: 2000 }
+                            },
+                            x: { 
+                                grid: { display: false }, 
+                                border: { display: false },
+                                ticks: { color: '#a0aec0', font: { weight: 'bold' } }
+                            }
+                        }
+                    }
+                });
+            })
+            .catch(err => {
+                console.error("API failed, falling back to dummy", err);
+                const mctx = document.getElementById('marketChart').getContext('2d');
+                new Chart(mctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ["Wheat", "Rice", "Maize", "Cotton"],
+                        datasets: [
+                            { label: 'Local Mandi (₹)', data: [2250, 3200, 1850, 6900], backgroundColor: '#4facfe', borderRadius: 6 },
+                            { label: 'Big City Market (₹)', data: [2500, 3600, 2150, 7400], backgroundColor: '#a8ff78', borderRadius: 6 }
+                        ]
+                    },
+                    options: {
+                        responsive: true, maintainAspectRatio: false,
+                        plugins: { legend: { display: true, labels: { color: '#a0aec0' } } },
+                        scales: { 
+                            y: { display: true, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#a0aec0'} },
+                            x: { grid: { display: false }, ticks: { color: '#a0aec0' } }
+                        }
+                    }
+                });
+            });
+    </script>
+
+<script src="assets/kisaan.js"></script>
+</body>
+</html>

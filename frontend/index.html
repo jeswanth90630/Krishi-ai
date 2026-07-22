@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krishi AI - Smart Agricultural Ecosystem</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;500;800&family=Outfit:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- AOS CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/style.css">
+    
+    <style>
+        .hero-section {
+            padding: 120px 0 80px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero-section h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            line-height: 1.1;
+        }
+        
+        .hero-section p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+        }
+        
+        .feature-grid {
+            margin-top: 80px;
+        }
+        
+        .feature-card {
+            background: var(--card-dark);
+            backdrop-filter: blur(12px);
+            padding: 40px;
+            border-radius: 25px;
+            border: 1px solid var(--glass-border);
+            transition: 0.4s;
+            text-align: left;
+        }
+        
+        .feature-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 242, 254, 0.15);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+        
+        .feature-card p {
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+        
+        .timeline-section {
+            padding: 100px 0;
+            background: rgba(0, 242, 254, 0.02);
+        }
+        
+        .timeline-container {
+            max-width: 900px;
+            margin: 60px auto 0;
+            position: relative;
+        }
+        
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+            opacity: 0.3;
+        }
+        
+        .timeline-item {
+            margin-bottom: 50px;
+            padding-left: 60px;
+            position: relative;
+        }
+        
+        .timeline-dot {
+            position: absolute;
+            left: 11px;
+            top: 5px;
+            width: 20px;
+            height: 20px;
+            background: var(--bg-dark);
+            border: 3px solid var(--primary);
+            border-radius: 50%;
+            z-index: 2;
+            box-shadow: 0 0 15px var(--primary);
+        }
+        
+        .timeline-content {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            padding: 30px;
+            border-radius: 20px;
+        }
+        
+        .phase-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            background: rgba(0, 242, 254, 0.1);
+            color: var(--primary);
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            font-family: 'Unbounded';
+        }
+        
+        .tech-badge {
+            background: rgba(168, 255, 120, 0.1);
+            color: var(--secondary);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            margin-right: 8px;
+            margin-top: 10px;
+            display: inline-block;
+            border: 1px solid rgba(168, 255, 120, 0.2);
+        }
+
+        .cta-box {
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.1), rgba(168, 255, 120, 0.05));
+            border: 1px solid var(--primary);
+            padding: 60px;
+            border-radius: 30px;
+            text-align: center;
+            margin-top: 100px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 0;
+        }
+
+        footer {
+            padding: 80px 0 40px;
+            text-align: center;
+            border-top: 1px solid var(--glass-border);
+        }
+    </style>
+</head>
+<body class="fade-in">
+    <div class="container" style="position: relative;">
+        <!-- Background Glows -->
+        <div class="bg-glow" style="top: 0; left: 10%;"></div>
+        <div class="bg-glow" style="bottom: 10%; right: 5%; background: var(--secondary); opacity: 0.1;"></div>
+        
+        <nav class="nav-container glass" style="margin-top: 20px; padding: 20px 40px; border-radius: 20px;">
+            <div class="logo">KRISHI AI.</div>
+            <div class="nav-links">
+                <a href="#about">Mission</a>
+                <a href="#features">Innovation</a>
+                <a href="#tech">Tech Stack</a>
+                <a href="dashboard.html" class="btn btn-primary" style="margin-left: 20px;">Enter Workspace 🚜</a>
+            </div>
+        </nav>
+
+        <section class="hero-section">
+            <div data-aos="fade-down" style="font-family: 'Unbounded'; color: var(--secondary); font-size: 0.9rem; font-weight: 800; letter-spacing: 2px; margin-bottom: 20px;">
+                AI-POWERED AGRICULTURE · VISION X 2026
+            </div>
+            <h1 data-aos="fade-up" data-aos-delay="100">The Future of <span style="background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">Smarter Farming</span></h1>
+            <p data-aos="fade-up" data-aos-delay="200">
+                Empowering the backbone of our planet with advanced Neural Diagnostics, Predictive Forecasting, and Precision Analytics.
+            </p>
+            <div data-aos="zoom-in" data-aos-delay="300">
+                <a href="dashboard.html" class="btn btn-primary" style="font-size: 1.1rem; padding: 18px 40px;">Launch Dashboard 📊</a>
+            </div>
+        </section>
+
+        <section id="features" class="section">
+            <div class="section-header" style="text-align: center; margin-bottom: 60px;">
+                <h2 style="font-size: 2.5rem;" data-aos="fade-up">Core <span style="color: var(--primary);">Innovation</span></h2>
+                <p style="color: var(--text-muted);" data-aos="fade-up" data-aos-delay="100">Built for accuracy, speed, and ecological sustainability</p>
+            </div>
+            
+            <div class="grid feature-grid">
+                <div class="feature-card glass" data-aos="fade-right">
+                    <span class="feature-icon">🔬</span>
+                    <h3>Plant Health Engine</h3>
+                    <p>High-accuracy disease detection using MobileNetV3 deep learning. Identifies conditions like Bacterial Spot and Mosaic Virus with 98% precision.</p>
+                </div>
+                <div class="feature-card glass" data-aos="fade-up">
+                    <span class="feature-icon">🧬</span>
+                    <h3>Soil Intelligence</h3>
+                    <p>Advanced feature extraction using HSV/LAB histograms and Gradient Magnitude to determine productivity index and optimal NPK ratios.</p>
+                </div>
+                <div class="feature-card glass" data-aos="fade-left">
+                    <span class="feature-icon">🦟</span>
+                    <h3>Pest Vector Scan</h3>
+                    <p>Identify over 101+ agricultural pests instantly and receive personalized organic or chemical control protocols.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="timeline-section" style="margin-top: 100px; border-radius: 40px; padding: 100px 40px;">
+            <div class="section-header" style="text-align: center; margin-bottom: 60px;">
+                <h2 style="font-size: 2.5rem;" data-aos="fade-up">Development <span style="color: var(--secondary);">Roadmap</span></h2>
+                <p style="color: var(--text-muted);" data-aos="fade-up" data-aos-delay="100">How we engineered Krishi AI in 36 hours</p>
+            </div>
+
+            <div class="timeline-container">
+                <div class="timeline-item" data-aos="fade-right">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content glass">
+                        <span class="phase-badge">Phase 1 · Hours 0-8</span>
+                        <h4 style="margin-bottom: 10px; font-family: 'Unbounded';">Model Architecture</h4>
+                        <p style="color: var(--text-muted); font-size: 0.9rem;">Training MobileNetV3 models on PlantVillage datasets and designing the high-performance FastAPI backend for sub-100ms inference.</p>
+                    </div>
+                </div>
+                <div class="timeline-item" data-aos="fade-right" data-aos-delay="100">
+                    <div class="timeline-dot" style="border-color: var(--secondary); box-shadow: 0 0 15px var(--secondary);"></div>
+                    <div class="timeline-content glass">
+                        <span class="phase-badge" style="background: rgba(168, 255, 120, 0.1); color: var(--secondary);">Phase 2 · Hours 8-20</span>
+                        <h4 style="margin-bottom: 10px; font-family: 'Unbounded';">Neural Interface</h4>
+                        <p style="color: var(--text-muted); font-size: 0.9rem;">Building the frontend dashboard with glassmorphism UI, real-time Chart.js integration, and localized weather synchronization.</p>
+                    </div>
+                </div>
+                <div class="timeline-item" data-aos="fade-right" data-aos-delay="200">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content glass">
+                        <span class="phase-badge">Phase 3 · Hours 20-36</span>
+                        <h4 style="margin-bottom: 10px; font-family: 'Unbounded';">Smart Ecosystem</h4>
+                        <p style="color: var(--text-muted); font-size: 0.9rem;">Integrating the Kisaan AI advisor, multilingual support, and voice-command feedback for localized accessibility.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tech" style="padding: 100px 0;">
+            <div class="section-header" style="text-align: center; margin-bottom: 60px;">
+                <h2 style="font-size: 2.5rem;" data-aos="fade-up">Powered <span style="color: var(--primary);">By</span></h2>
+            </div>
+            <div style="text-align: center;" data-aos="zoom-in">
+                <span class="tech-badge">Python FastAPI</span>
+                <span class="tech-badge">PyTorch</span>
+                <span class="tech-badge">Scikit-Learn</span>
+                <span class="tech-badge">OpenCV</span>
+                <span class="tech-badge">Vanilla JS (Modern ES6+)</span>
+                <span class="tech-badge">CSS Glassmorphism</span>
+                <span class="tech-badge">Chart.js</span>
+                <span class="tech-badge">MobileNetV3</span>
+            </div>
+        </section>
+
+        <div class="cta-box glass" data-aos="zoom-in">
+            <h2 style="font-size: 2.5rem; margin-bottom: 20px; font-family: 'Unbounded';">Ready to revolutionize <span style="color: var(--secondary);">your field?</span></h2>
+            <p style="color: var(--text-muted); margin-bottom: 35px;">Join thousands of farmers using intelligence to ensure food security.</p>
+            <a href="dashboard.html" class="btn btn-primary" style="padding: 18px 45px; font-size: 1.1rem;">Enter Workspace Now 🚀</a>
+        </div>
+
+        <footer>
+            <div class="logo" style="margin-bottom: 20px;">KRISHI AI.</div>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Built at Vision X 2026 Hackathon · Swarnandhra CET</p>
+            <p style="color: var(--text-muted); font-size: 0.7rem; margin-top: 10px;">© 2026 Krishi AI. Intelligence for Sustainability.</p>
+        </footer>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+    </script>
+</body>
+</html>

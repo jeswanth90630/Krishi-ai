@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krishi AI - Health Advisory Intelligence</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;500;800&family=Outfit:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- AOS CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- SweetAlert2 -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/style.css">
+    <style>
+        .advisory-card { background: rgba(5, 11, 20, 0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 2px solid var(--primary); padding: 60px; border-radius: 40px; position: relative; }
+        .advisory-card h2 { font-size: 3rem; margin-bottom: 30px; }
+        .info-pill { padding: 10px 20px; border-radius: 20px; background: rgba(0, 242, 254, 0.1); border: 1px solid var(--primary); color: var(--primary); font-weight: bold; margin-bottom: 20px; display: inline-block; }
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow" style="top: -50px; right: -50px; background: #ff5e5e;"></div>
+
+    <div class="container" style="padding-top: 50px;">
+        <nav class="glass fade-in" data-aos="fade-down">
+            <div class="logo">KRISHI AI.</div>
+            <div class="nav-links">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="detection.html">Detection</a>
+                <a href="prediction.html">Prediction</a>
+            </div>
+        </nav>
+
+        <header style="margin-top: 60px; text-align: center;" data-aos="fade-up">
+            <h1 style="font-size: 3.5rem;">Clinical <span style="color: var(--primary);">Health</span> Advisory.</h1>
+            <p style="color: var(--text-muted); font-size: 1.2rem; margin-top: 10px;">Expert treatment protocols and prevention guidelines based on AI analysis.</p>
+        </header>
+
+        <div class="advisory-card glass" style="margin-top: 60px;" data-aos="zoom-in">
+            <span class="info-pill">Diagnosis Result</span>
+            <h2 id="advSub" style="color: var(--primary);">Tomato Early Blight</h2>
+            <div style="margin-top: 40px; border-top: 1px solid var(--glass-border); padding-top: 40px;">
+                <p style="font-size: 0.8rem; font-weight: bold; letter-spacing: 2px; color: var(--secondary);">Etiology (Cause)</p>
+                <p id="advCause" style="color: var(--text-white); font-size: 1.25rem; font-weight: 700; margin-top: 10px;">Venturia inaequalis fungus</p>
+                
+                <p style="font-size: 0.8rem; font-weight: bold; letter-spacing: 2px; color: var(--secondary); margin-top: 40px;">Clinical Response (Treatment)</p>
+                <p id="advTreat" style="color: var(--text-white); font-size: 1.25rem; font-weight: 700; margin-top: 10px;">Apply fungicides like Myclobutanil or Propiconazole immediately.</p>
+                
+                <p style="font-size: 0.8rem; font-weight: bold; letter-spacing: 2px; color: var(--secondary); margin-top: 40px;">Biosecurity (Prevention)</p>
+                <p id="advPrev" style="color: var(--text-white); font-size: 1.25rem; font-weight: 700; margin-top: 10px;">Prune out infected branches, remove fallen leaves in autumn.</p>
+            </div>
+            
+            <button class="btn btn-primary" style="margin-top: 50px;" id="voiceOut">Listen to Advisory (AI Voice) 🔊</button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+    
+    <script>
+        AOS.init({ once: true, duration: 800 });
+
+        const sub = localStorage.getItem('adviseSubject') || 'Tomato Early Blight';
+        document.getElementById('advSub').innerText = sub;
+        
+        fetch('/api/advisory/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ disease: sub })
+        })
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById('advCause').innerText = data.cause;
+            document.getElementById('advTreat').innerText = data.treatment;
+            document.getElementById('advPrev').innerText = data.prevention;
+        });
+
+        document.getElementById('voiceOut').onclick = () => {
+             const text = `The diagnosis for your crop is ${sub}. The primary cause is ${document.getElementById('advCause').innerText}. For treatment, we recommend ${document.getElementById('advTreat').innerText}. To prevent future occurrences, ${document.getElementById('advPrev').innerText}`;
+             const msg = new SpeechSynthesisUtterance();
+             msg.text = text;
+             window.speechSynthesis.speak(msg);
+             Swal.fire({
+                 title: 'AI Narrator Active',
+                 text: 'Transmitting advisory audio stream...',
+                 timer: 3000,
+                 showConfirmButton: false
+             });
+        }
+    </script>
+</body>
+</html>
