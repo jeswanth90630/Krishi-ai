@@ -157,37 +157,15 @@ flowchart TD
 
 Krishi AI replaces single-model architectures with a **Hybrid Machine Learning Pipeline**, deploying specialized models fine-tuned for visual, tabular, and conversational domains.
 
-### 🧬 Model Cards
+### 📋 Model Specifications
 
-#### 1️⃣ Plant Pathology Scan
-> **Framework:** PyTorch — `MobileNetV3-Large`
-> - **Input Vector:** Leaf Image (`224x224 RGB`)
-> - **Domain & Feature Extraction:** Spatial CNN feature mapping across **20 disease classes** (Blight, Rust, Scab, Mosaic)
-> - **Guardrails & Safety Net:** Confidence threshold `< 35%` triggers automated re-scan prompt to prevent erroneous recommendations
-
-#### 2️⃣ Entomology Identification
-> **Framework:** PyTorch — `MobileNetV3 Deep Classifier`
-> - **Input Vector:** Pest Image (`224x224 RGB`)
-> - **Domain & Feature Extraction:** Deep visual classification across **102 agricultural insect species** mapped to treatment database
-> - **Guardrails & Safety Net:** Confidence threshold `< 20%` triggers secondary verification
-
-#### 3️⃣ Soil Texture Vision
-> **Framework:** Scikit-Learn — `Random Forest Classifier`
-> - **Input Vector:** Soil Photo (`256x256 RGB`)
-> - **Domain & Feature Extraction:** Manual extraction of **153 mathematical features** (96 HSV + 48 LAB + 6 RGB + 3 Sobel Gradients)
-> - **Guardrails & Safety Net:** Confidence threshold `< 40%` rejects non-soil artifacts and prompts user re-scan
-
-#### 4️⃣ Crop & Fertilizer Predictor
-> **Framework:** Scikit-Learn — `Random Forest & XGBoost`
-> - **Input Vector:** NPK Ratio, soil pH, Temperature, Humidity
-> - **Domain & Feature Extraction:** Multi-variable decision trees matching soil chemistry with optimal crop yield profiles
-> - **Guardrails & Safety Net:** Hard agronomical deterministic boundary checks to ensure recommendation validity
-
-#### 5️⃣ Generative Reasoning
-> **Framework:** Google Gemini — `Gemini-1.5-Flash LLM`
-> - **Input Vector:** Structured JSON Context (Visual Diagnostics + Tabular Chemistry + Weather + Market Trends)
-> - **Domain & Feature Extraction:** Generates localized agronomic treatment steps, Mandi price trends, and Govt. scheme eligibility
-> - **Guardrails & Safety Net:** Strict JSON schema enforcement & XSS sanitization of text advisory streams
+| Layer / Model | Framework / Algorithm | Input Dimensions | Domain & Feature Space Extraction | Guardrail / Confidence Threshold |
+| :--- | :--- | :--- | :--- | :--- |
+| **1️⃣ Plant Pathology** | `PyTorch MobileNetV3-Large` | Leaf Image `224x224 RGB` | Spatial CNN feature mapping across **20 disease classes** (Blight, Rust, Scab, Mosaic) | Confidence threshold `< 35%` triggers automated re-scan prompt |
+| **2️⃣ Entomology Net** | `PyTorch MobileNetV3 Deep` | Pest Image `224x224 RGB` | Deep visual classification across **102 agricultural insect species** mapped to treatment DB | Confidence threshold `< 20%` triggers secondary verification |
+| **3️⃣ Soil Classifier** | `Scikit-Learn Random Forest` | Soil Photo `256x256 RGB` | Manual extraction of **153 mathematical features** (96 HSV + 48 LAB + 6 RGB + 3 Sobel Gradients) | Confidence threshold `< 40%` rejects non-soil artifacts |
+| **4️⃣ Crop Recommendation** | `Scikit-Learn Random Forest/XGB` | NPK, pH, Temp, Humidity | Multi-variable decision trees matching soil chemistry with optimal crop yield profiles | Hard agronomical deterministic boundary checks |
+| **5️⃣ Advisory LLM** | `Google Gemini-1.5-Flash` | Structured JSON Context | Generates localized treatment steps, Mandi price trends, and Govt. scheme eligibility | Strict JSON schema enforcement & XSS sanitization |
 
 ---
 
