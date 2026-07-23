@@ -14,7 +14,7 @@
 
   <br/>
 
-  <!-- BADGES MATRIX (Cohesive Green/Teal Palette) -->
+  <!-- BADGES MATRIX -->
   <p align="center">
     <a href="https://github.com/jeswanth90630/Krishi-ai">
       <img src="https://img.shields.io/badge/System_Status-Production--Ready-059669?style=for-the-badge&logo=rocket&logoColor=white" alt="Status" />
@@ -74,7 +74,7 @@
     <a href="#-executive-overview"><b>Overview</b></a> &nbsp;•&nbsp;
     <a href="#-system-architecture"><b>Architecture</b></a> &nbsp;•&nbsp;
     <a href="#-ai--ml-model-pipeline"><b>AI Models</b></a> &nbsp;•&nbsp;
-    <a href="#-core-capabilities"><b>Core Capabilities</b></a> &nbsp;•&nbsp;
+    <a href="#-core-platform-modules"><b>Core Capabilities</b></a> &nbsp;•&nbsp;
     <a href="#-technology-ecosystem"><b>Tech Stack</b></a> &nbsp;•&nbsp;
     <a href="#-project-structure"><b>Project Structure</b></a> &nbsp;•&nbsp;
     <a href="#-installation--setup"><b>Getting Started</b></a> &nbsp;•&nbsp;
@@ -151,6 +151,14 @@ flowchart TD
     OpenMeteo -->|Live Forecast Inputs| UI
 ```
 
+### 🔄 Data Orchestration Lifecycle
+
+1. **Presentation Layer (Client)**: User uploads leaf/pest/soil photos or inputs geographic location via the dashboard interface.
+2. **API Routing (FastAPI Gateway)**: Sanitizes input payload, validates data shapes via Pydantic, and handles asynchronous requests.
+3. **ML Inference Pipeline**: Parallel execution of visual classifiers (PyTorch) and tabular predictors (Scikit-Learn) to output raw analytics vectors.
+4. **Context Orchestration**: Aggregates model outputs, live meteorology feeds (Open-Meteo), and market pricing telemetry.
+5. **Generative Synthesis (Google Gemini)**: Synthesizes structured agronomic contexts to draft localized action plans, government subsidy matches, and crop advisors.
+
 ---
 
 ## 🧠 AI & ML Model Pipeline
@@ -169,49 +177,40 @@ Krishi AI replaces single-model architectures with a **Hybrid Machine Learning P
 
 ---
 
-## 🚀 Core Capabilities
+## 🌟 Core Platform Modules
 
-<table width="100%">
-  <tr>
-    <td width="50%" valign="top">
-      <h3>🔬 Multi-Modal Field Diagnostics</h3>
-      <ul>
-        <li><b>🌱 Instant Crop Pathology:</b> Identifies fungal, bacterial, and viral crop infections within milliseconds.</li>
-        <li><b>🐛 Entomology Engine:</b> Pinpoints insect species with organic & chemical remedy options.</li>
-        <li><b>🧪 Soil Vision Profiler:</b> Estimates soil texture, porosity, and organic suitability visually.</li>
-        <li><b>📊 Severity Grading:</b> Evaluates infection severity to determine urgent vs. standard interventions.</li>
-      </ul>
-    </td>
-    <td width="50%" valign="top">
-      <h3>🌾 Precision Crop & Water Advisory</h3>
-      <ul>
-        <li><b>⚖️ NPK Deficit Calculator:</b> Measures nitrogen, phosphorus, and potassium shortfall per acre with dosage schedules.</li>
-        <li><b>💧 Smart Irrigation Engine:</b> Calculates evapotranspiration-based daily watering recommendations.</li>
-        <li><b>📈 Yield Maximizer:</b> Recommends high-value alternative cash crops based on soil microclimate.</li>
-        <li><b>🔊 Voice-Assisted Insights:</b> Built-in TTS support for regional language accessibility.</li>
-      </ul>
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" valign="top">
-      <h3>📈 Mandi Market Intelligence</h3>
-      <ul>
-        <li><b>📊 Live Commodity Tracker:</b> Tracks real-time price fluctuations across regional agricultural markets (Mandis).</li>
-        <li><b>📉 Interactive Trend Analytics:</b> Visualized price forecasting powered by Chart.js.</li>
-        <li><b>🚚 Arbitrage Analyzer:</b> Compares local rural Mandis vs. city centers to evaluate net transport profit margins.</li>
-        <li><b>📅 Harvest Timing Guidance:</b> Predicts market demand surges to advise on optimal harvest dates.</li>
-      </ul>
-    </td>
-    <td width="50%" valign="top">
-      <h3>📜 Welfare & Subsidy Matcher</h3>
-      <ul>
-        <li><b>🎯 Automated Eligibility Engine:</b> Evaluates landholding and crop profiles against PM-KISAN, PMFBY, KUSUM, and regional schemes.</li>
-        <li><b>🔗 Direct Portal Integration:</b> Provides direct links to official state and national application portals.</li>
-        <li><b>📚 Resource Knowledge Base:</b> Comprehensive repository of agronomical best practices and disaster recovery guides.</li>
-      </ul>
-    </td>
-  </tr>
-</table>
+### 🔬 Multi-Modal Field Diagnostics
+*Instant visual crop pathology, pest detection, and soil profiling at the edge.*
+- **🌱 Instant Crop Pathology** — Identifies fungal, bacterial, and viral crop infections in milliseconds.
+- **🐛 Entomology Engine** — Pinpoints insect species with organic & chemical remedy options.
+- **🧪 Soil Vision Profiler** — Estimates soil texture, porosity, and suitability visually.
+- **📊 Severity Grading** — Evaluates infection severity to determine urgent vs. standard interventions.
+
+---
+
+### 🌾 Precision Crop & Water Advisory
+*Evapotranspiration-based irrigation, NPK deficit chemistry calculation, and TTS translation.*
+- **⚖️ NPK Deficit Calculator** — Measures nitrogen, phosphorus, and potassium shortfall per acre with dosage schedules.
+- **💧 Smart Irrigation Engine** — Calculates evapotranspiration-based daily watering recommendations.
+- **📈 Yield Maximizer** — Recommends high-value alternative cash crops based on soil microclimate.
+- **🔊 Voice-Assisted Insights** — Built-in Text-To-Speech (TTS) support for regional language accessibility.
+
+---
+
+### 📈 Mandi Market Intelligence
+*Real-time pricing feeds, forecasting charts, and transportation cost calculators.*
+- **📊 Live Commodity Tracker** — Tracks real-time price fluctuations across regional agricultural markets (Mandis).
+- **📉 Interactive Trend Analytics** — Visualized price forecasting powered by Chart.js.
+- **🚚 Arbitrage Analyzer** — Compares local rural Mandis vs. city centers to evaluate net transport profit margins.
+- **📅 Harvest Timing Guidance** — Predicts market demand surges to advise on optimal harvest dates.
+
+---
+
+### 📜 Welfare & Subsidy Matcher
+*Algorithmic criteria matching, portal links, and emergency guides.*
+- **🎯 Automated Eligibility Engine** — Evaluates landholding and crop profiles against PM-KISAN, PMFBY, KUSUM, and regional schemes.
+- **🔗 Direct Portal Integration** — Provides direct links to official state and national application portals.
+- **📚 Resource Knowledge Base** — Comprehensive repository of agronomical best practices and disaster recovery guides.
 
 ---
 
