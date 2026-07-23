@@ -1,378 +1,404 @@
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!--                         KRISHI AI · README                        -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+
 <div align="center">
 
-  <!-- DYNAMIC TYPING HEADER SVG -->
-  <a href="https://github.com/jeswanth90630/Krishi-ai">
-    <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=28&pause=1000&color=10B981&center=true&vCenter=true&width=750&height=50&lines=%F0%9F%8C%BE+KRISHI+AI%3A+HYBRID+AGRI-INTELLIGENCE;%F0%9F%A9BA+REAL-TIME+PLANT+PATHOLOGY+%2B+PEST+VISION;%F0%9F%A7A0+FASTAPI+%2B+PYTORCH+%2B+GEMINI+GEN-AI;%F0%9F%93%88+MANDI+ANALYTICS+%2B+GOVT+SCHEME+MATCHER" alt="Krishi AI Header Banner" />
-  </a>
+<a href="https://github.com/jeswanth90630/Krishi-ai">
+  <img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=32&pause=1000&color=10B981&center=true&vCenter=true&width=800&height=60&lines=🌾+KRISHI+AI;Real-Time+Plant+Pathology+%2B+Pest+Vision;FastAPI+%2B+PyTorch+%2B+Gemini+Gen-AI;Mandi+Analytics+%2B+Govt+Scheme+Matcher" alt="Krishi AI" />
+</a>
 
-  <br/>
-  <br/>
+<br/>
 
-  <h1>🌾 KRISHI AI</h1>
-  <h3>Next-Generation Multimodal Precision Agriculture & Agronomic Decision System</h3>
-  <p><i>Unifying Edge Computer Vision, Classical Agronomic Machine Learning & LLM Reasoning to Protect Crop Yields</i></p>
+```
+╔══════════════════════════════════════════════════════════════╗
+║   🌱  Precision Agriculture Intelligence for Every Farmer    ║
+║   Diagnose · Predict · Advise · Protect · Empower           ║
+╚══════════════════════════════════════════════════════════════╝
+```
 
-  <br/>
+<p>
+  <a href="https://github.com/jeswanth90630/Krishi-ai"><img src="https://img.shields.io/badge/STATUS-PRODUCTION_READY-10B981?style=flat-square&logo=checkmarx&logoColor=white"/></a>
+  <a href="https://python.org"><img src="https://img.shields.io/badge/PYTHON-3.9%2B-10B981?style=flat-square&logo=python&logoColor=white"/></a>
+  <a href="https://fastapi.tiangolo.com"><img src="https://img.shields.io/badge/FASTAPI-ASYNC_REST-10B981?style=flat-square&logo=fastapi&logoColor=white"/></a>
+  <a href="https://pytorch.org"><img src="https://img.shields.io/badge/PYTORCH-MOBILENETV3-10B981?style=flat-square&logo=pytorch&logoColor=white"/></a>
+  <a href="https://ai.google.dev"><img src="https://img.shields.io/badge/GEMINI-GEN_AI-10B981?style=flat-square&logo=google&logoColor=white"/></a>
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/LICENSE-MIT-10B981?style=flat-square"/></a>
+</p>
 
-  <!-- BADGES MATRIX -->
-  <p align="center">
-    <a href="https://github.com/jeswanth90630/Krishi-ai">
-      <img src="https://img.shields.io/badge/System_Status-Production--Ready-059669?style=for-the-badge&logo=rocket&logoColor=white" alt="Status" />
-    </a>
-    <a href="https://python.org">
-      <img src="https://img.shields.io/badge/Python-3.9+-065F46?style=for-the-badge&logo=python&logoColor=white" alt="Python" />
-    </a>
-    <a href="https://fastapi.tiangolo.com/">
-      <img src="https://img.shields.io/badge/FastAPI-0.100+-0D9488?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI" />
-    </a>
-    <a href="https://pytorch.org/">
-      <img src="https://img.shields.io/badge/PyTorch-MobileNetV3-0F766E?style=for-the-badge&logo=pytorch&logoColor=white" alt="PyTorch" />
-    </a>
-    <a href="https://scikit-learn.org/">
-      <img src="https://img.shields.io/badge/Scikit--Learn-ML_Core-10B981?style=for-the-badge&logo=scikit-learn&logoColor=white" alt="Scikit-Learn" />
-    </a>
-    <a href="https://ai.google.dev/">
-      <img src="https://img.shields.io/badge/Gen_AI-Google_Gemini-14B8A6?style=for-the-badge&logo=google&logoColor=white" alt="Gemini AI" />
-    </a>
-    <a href="https://opensource.org/licenses/MIT">
-      <img src="https://img.shields.io/badge/License-MIT-047857?style=for-the-badge" alt="License" />
-    </a>
-  </p>
-
-  <br/>
-
-  <!-- METRICS HIGHLIGHT BOARD -->
-  <table align="center" width="100%">
-    <tr>
-      <td align="center" valign="top" width="20%">
-        <h3>🧬 20+</h3>
-        <p><b>Leaf Diseases</b><br/><sub>PyTorch MobileNetV3</sub></p>
-      </td>
-      <td align="center" valign="top" width="20%">
-        <h3>🐛 102</h3>
-        <p><b>Pest Species</b><br/><sub>Deep Entomological Vision</sub></p>
-      </td>
-      <td align="center" valign="top" width="20%">
-        <h3>🧪 153</h3>
-        <p><b>Soil Features</b><br/><sub>OpenCV Gradients & Color</sub></p>
-      </td>
-      <td align="center" valign="top" width="20%">
-        <h3>⚡ &lt;150ms</h3>
-        <p><b>Inference Speed</b><br/><sub>Asynchronous FastAPI API</sub></p>
-      </td>
-      <td align="center" valign="top" width="20%">
-        <h3>🤖 Gemini</h3>
-        <p><b>Gen-AI Advisor</b><br/><sub>Contextual Local Guidance</sub></p>
-      </td>
-    </tr>
-  </table>
-
-  <br/>
-
-  <!-- QUICK NAVIGATION CHIPS -->
-  <p align="center">
-    <a href="#-executive-overview"><b>Overview</b></a> &nbsp;•&nbsp;
-    <a href="#-system-architecture"><b>Architecture</b></a> &nbsp;•&nbsp;
-    <a href="#-ai--ml-model-pipeline"><b>AI Models</b></a> &nbsp;•&nbsp;
-    <a href="#-core-platform-modules"><b>Core Capabilities</b></a> &nbsp;•&nbsp;
-    <a href="#-technology-ecosystem"><b>Tech Stack</b></a> &nbsp;•&nbsp;
-    <a href="#-project-structure"><b>Project Structure</b></a> &nbsp;•&nbsp;
-    <a href="#-installation--setup"><b>Getting Started</b></a> &nbsp;•&nbsp;
-    <a href="#-api-endpoint-reference"><b>API Docs</b></a>
-  </p>
+<p>
+  <b>
+    <a href="#-the-problem-we-solve">Problem</a> ·
+    <a href="#-system-architecture">Architecture</a> ·
+    <a href="#-intelligence-pipeline">AI Pipeline</a> ·
+    <a href="#-platform-modules">Modules</a> ·
+    <a href="#-stack">Stack</a> ·
+    <a href="#-getting-started">Get Started</a> ·
+    <a href="#-api-reference">API</a>
+  </b>
+</p>
 
 </div>
 
+<br/>
+
 ---
 
-## 📌 Executive Overview
+## ⚡ At a Glance
 
-**Krishi AI** is an enterprise-grade, multi-modal agronomic intelligence platform designed to eliminate crop yield loss, diagnose plant diseases in real time, and eliminate market opacity for agricultural communities.
+<div align="center">
 
-By orchestrating **Convolutional Neural Networks (MobileNetV3 / ResNet)** for visual field scans, **Scikit-Learn Ensemble Models** for soil texture and crop-fertilizer recommendations, and **Google Gemini Generative AI** for localized advisory generation, Krishi AI converts a simple smartphone photo into a full agronomical diagnostic report.
+| &nbsp;&nbsp;&nbsp;&nbsp;🧬 Disease Vision&nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp;🐛 Pest Identification&nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp;🧪 Soil Intelligence&nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp;⚡ API Latency&nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp;🤖 Generative AI&nbsp;&nbsp;&nbsp;&nbsp; |
+|:---:|:---:|:---:|:---:|:---:|
+| **20+ Classes** | **102 Species** | **153 Features** | **< 150ms** | **Gemini 1.5** |
+| MobileNetV3 CNN | Deep Entomology | OpenCV Vision | Async FastAPI | Contextual LLM |
 
-> [!TIP]
-> ### 💡 30-Second Recruiter & Technical Summary
-> - **The Problem:** Smallholder farmers lose up to **40% of crop yields** due to undetected leaf diseases, pest infestations, and unoptimized soil fertilization.
-> - **The Architecture:** Asynchronous **FastAPI REST Gateway** running PyTorch neural nets, Scikit-Learn tabular predictors, and LLM reasoning engines with zero-latency response pipelines.
-> - **Key Highlights:** Instant visual pathology diagnosis, automated NPK fertilizer deficit calculation, weather-aware irrigation scheduling, live Mandi commodity tracking, and multi-lingual voice output.
+</div>
+
+<br/>
+
+---
+
+## 🌾 The Problem We Solve
+
+> *Smallholder farmers across India lose up to* ***40% of annual crop yields*** *due to three invisible threats: undetected leaf disease, pest infestations they cannot identify, and soil chemistry they cannot test.*
+
+**Krishi AI** is a multimodal agronomic intelligence platform that puts a full-stack diagnostic laboratory in every farmer's pocket — requiring nothing more than a smartphone camera. From a single image upload, the system returns:
+
+- 🔬 A clinical-grade **plant disease diagnosis** with treatment protocol
+- 🐛 An **entomological identification** with organic + chemical remedy options
+- 🧪 A **soil composition profile** with NPK deficit calculations
+- 💧 An **irrigation schedule** calibrated to real-time weather telemetry
+- 📈 **Live Mandi commodity prices** with 7-day trend forecasting
+- 📜 **Government scheme eligibility matching** (PM-KISAN, PMFBY, KUSUM)
 
 ---
 
 ## 🏛️ System Architecture
 
-Krishi AI utilizes an asynchronous, event-driven microservice architecture powered by **FastAPI**, with strict Pydantic payload validation, RAM/VRAM inference pipelines, and automated fallback guardrails.
+Krishi AI is built on an **asynchronous, event-driven microservice backbone**. Every image upload triggers a parallel inference pipeline — disease, pest, and soil models execute concurrently via FastAPI's async router, with Gemini LLM synthesizing a final advisory report.
 
 ```mermaid
 flowchart TD
-    %% Custom Styling - Cohesive Green-to-Blue Color Grading
-    classDef client fill:#064E3B,stroke:#10B981,stroke-width:2px,color:#FFF;
-    classDef gateway fill:#0F766E,stroke:#14B8A6,stroke-width:2px,color:#FFF;
-    classDef model fill:#047857,stroke:#34D399,stroke-width:2px,color:#FFF;
-    classDef external fill:#1E3A8A,stroke:#60A5FA,stroke-width:2px,color:#FFF;
+    classDef client    fill:#064E3B,stroke:#10B981,stroke-width:2px,color:#fff
+    classDef gateway   fill:#065F46,stroke:#34D399,stroke-width:2px,color:#fff
+    classDef vision    fill:#0F766E,stroke:#2DD4BF,stroke-width:2px,color:#fff
+    classDef tabular   fill:#0E7490,stroke:#38BDF8,stroke-width:2px,color:#fff
+    classDef llm       fill:#1E3A5F,stroke:#60A5FA,stroke-width:2px,color:#fff
+    classDef ext       fill:#1E1B4B,stroke:#818CF8,stroke-width:2px,color:#fff
 
-    subgraph ClientLayer ["📱 Frontend Presentation Layer"]
-        UI["Glassmorphic Dashboard (HTML5 / CSS3 / ES6 JS)"]:::client
-        Geo["Browser Geolocation & Multi-Lang i18n Engine"]:::client
+    subgraph FRONTEND ["📱  CLIENT  —  Glassmorphic HTML5 Dashboard"]
+        Browser["Browser + Geolocation + i18n"]:::client
     end
 
-    subgraph GatewayLayer ["⚡ Backend API Gateway (FastAPI)"]
-        Router{"FastAPI Endpoint Router"}:::gateway
-        Validator["Pydantic Payload Validation & Image Sanitization"]:::gateway
+    subgraph GATEWAY ["⚡  GATEWAY  —  FastAPI Async REST"]
+        Router{{"Endpoint Router"}}:::gateway
+        Guard["Pydantic Validator + Image Sanitizer"]:::gateway
     end
 
-    subgraph InferenceLayer ["🧠 Deep Learning & Machine Learning Engine"]
-        DiseaseNet["MobileNetV3 Leaf Pathology Classifier\n(20 Diseases | PyTorch)"]:::model
-        PestNet["Entomological Pest Detector\n(102 Species | PyTorch)"]:::model
-        SoilNet["Random Forest Soil Texture Vision\n(153 OpenCV Features)"]:::model
-        CropML["Scikit-Learn Agronomic Recommender\n(NPK + Climate Vectors)"]:::model
+    subgraph VISION ["🧠  VISION ENGINE  —  PyTorch CNNs"]
+        DiseaseNet["🌿 MobileNetV3\nLeaf Pathology\n20 Disease Classes"]:::vision
+        PestNet["🐛 MobileNetV3\nEntomology Detector\n102 Insect Species"]:::vision
+        SoilNet["🧪 Random Forest\nSoil Texture Vision\n153 OpenCV Features"]:::vision
     end
 
-    subgraph ExternalLayer ["🌐 External Intelligence Services"]
-        Gemini["Google Gemini LLM\n(Localized Action Plans & Govt. Schemes)"]:::external
-        OpenMeteo["Open-Meteo Weather API\n(Real-Time Telemetry)"]:::external
+    subgraph TABULAR ["📊  TABULAR ENGINE  —  Scikit-Learn / XGBoost"]
+        CropML["🌾 Crop Recommender\nNPK + pH + Climate"]:::tabular
+        FertML["⚗️  Fertilizer Planner\nDosage Timeline"]:::tabular
     end
 
-    UI -->|Multipart Upload / JSON| Router
-    Geo -->|Coords & i18n Pref| Router
-    Router --> Validator
-    Validator --> DiseaseNet
-    Validator --> PestNet
-    Validator --> SoilNet
-    Validator --> CropML
-    Validator --> Gemini
-    Validator --> OpenMeteo
+    subgraph COGNITIVE ["🤖  COGNITIVE LAYER  —  Gemini 1.5 Flash"]
+        LLM["Advisory Synthesizer\nScheme Matcher + Market Analyst"]:::llm
+    end
 
-    DiseaseNet -->|Diagnostic Metrics| UI
-    PestNet -->|Insect Remedy Vectors| UI
-    SoilNet -->|Soil Composition Profile| UI
-    CropML -->|Optimal Crop & Fertilizer Matrix| UI
-    Gemini -->|Actionable Farm Guidance| UI
-    OpenMeteo -->|Live Forecast Inputs| UI
+    subgraph EXTERNAL ["🌐  EXTERNAL FEEDS"]
+        Weather["Open-Meteo\nWeather API"]:::ext
+        Market["AgMarket\nMandi Feeds"]:::ext
+    end
+
+    Browser -->|"Upload + Coords"| Router
+    Router --> Guard
+    Guard -->|"Image"| DiseaseNet & PestNet & SoilNet
+    Guard -->|"NPK / pH / Climate"| CropML & FertML
+    Guard -->|"Context JSON"| LLM
+    Weather -->|"Live Telemetry"| LLM
+    Market  -->|"Commodity Rates"| LLM
+
+    DiseaseNet & PestNet & SoilNet & CropML & FertML & LLM -->|"Diagnostic Report"| Browser
 ```
 
-### 🔄 Data Orchestration Lifecycle
-
-1. **Presentation Layer (Client)**: User uploads leaf/pest/soil photos or inputs geographic location via the dashboard interface.
-2. **API Routing (FastAPI Gateway)**: Sanitizes input payload, validates data shapes via Pydantic, and handles asynchronous requests.
-3. **ML Inference Pipeline**: Parallel execution of visual classifiers (PyTorch) and tabular predictors (Scikit-Learn) to output raw analytics vectors.
-4. **Context Orchestration**: Aggregates model outputs, live meteorology feeds (Open-Meteo), and market pricing telemetry.
-5. **Generative Synthesis (Google Gemini)**: Synthesizes structured agronomic contexts to draft localized action plans, government subsidy matches, and crop advisors.
+<br/>
 
 ---
 
-## 🧠 AI & ML Model Pipeline
+## 🧠 Intelligence Pipeline
 
-Krishi AI replaces single-model architectures with a **Hybrid Machine Learning Pipeline**, deploying specialized models fine-tuned for visual, tabular, and conversational domains.
+Five specialized AI/ML engines form a **heterogeneous inference pipeline**, each purpose-built for a distinct sensory domain:
 
-### 📋 Model Specifications
+<br/>
 
-| Layer / Model | Framework / Algorithm | Input Dimensions | Domain & Feature Space Extraction | Guardrail / Confidence Threshold |
-| :--- | :--- | :--- | :--- | :--- |
-| **1️⃣ Plant Pathology** | `PyTorch MobileNetV3-Large` | Leaf Image `224x224 RGB` | Spatial CNN feature mapping across **20 disease classes** (Blight, Rust, Scab, Mosaic) | Confidence threshold `< 35%` triggers automated re-scan prompt |
-| **2️⃣ Entomology Net** | `PyTorch MobileNetV3 Deep` | Pest Image `224x224 RGB` | Deep visual classification across **102 agricultural insect species** mapped to treatment DB | Confidence threshold `< 20%` triggers secondary verification |
-| **3️⃣ Soil Classifier** | `Scikit-Learn Random Forest` | Soil Photo `256x256 RGB` | Manual extraction of **153 mathematical features** (96 HSV + 48 LAB + 6 RGB + 3 Sobel Gradients) | Confidence threshold `< 40%` rejects non-soil artifacts |
-| **4️⃣ Crop Recommendation** | `Scikit-Learn Random Forest/XGB` | NPK, pH, Temp, Humidity | Multi-variable decision trees matching soil chemistry with optimal crop yield profiles | Hard agronomical deterministic boundary checks |
-| **5️⃣ Advisory LLM** | `Google Gemini-1.5-Flash` | Structured JSON Context | Generates localized treatment steps, Mandi price trends, and Govt. scheme eligibility | Strict JSON schema enforcement & XSS sanitization |
+```
+ STAGE        ENGINE                  INPUT             COVERAGE         SAFETY GATE
+ ─────────────────────────────────────────────────────────────────────────────────────
+ 1  VISION    MobileNetV3-Large       Leaf  224×224 px  20  diseases     conf < 35% → rescan
+ 2  VISION    MobileNetV3 Deep        Pest  224×224 px  102 species      conf < 20% → verify
+ 3  VISION    Random Forest + CV      Soil  256×256 px  153 features     conf < 40% → reject
+ 4  TABULAR   Random Forest + XGB     NPK, pH, Temp, RH  crop matrix    boundary checks
+ 5  COGNITIVE Gemini-1.5-Flash LLM   Structured JSON  Advisory output   schema + XSS guard
+ ─────────────────────────────────────────────────────────────────────────────────────
+```
 
----
+<br/>
 
-## 🌟 Core Platform Modules
+Each model is guarded by a **confidence threshold circuit-breaker** — if a model is uncertain, it halts and prompts a re-scan rather than issuing a wrong recommendation.
 
-### 🔬 Multi-Modal Field Diagnostics
-*Instant visual crop pathology, pest detection, and soil profiling at the edge.*
-- **🌱 Instant Crop Pathology** — Identifies fungal, bacterial, and viral crop infections in milliseconds.
-- **🐛 Entomology Engine** — Pinpoints insect species with organic & chemical remedy options.
-- **🧪 Soil Vision Profiler** — Estimates soil texture, porosity, and suitability visually.
-- **📊 Severity Grading** — Evaluates infection severity to determine urgent vs. standard interventions.
+> [!IMPORTANT]
+> **Feature Engineering for Soil Vision** — The 153 soil features are mathematically derived: **96 HSV histogram bins** + **48 LAB color moment statistics** + **6 RGB channel statistics** + **3 Sobel gradient magnitudes** (edge density proxies for soil texture coarseness).
 
----
-
-### 🌾 Precision Crop & Water Advisory
-*Evapotranspiration-based irrigation, NPK deficit chemistry calculation, and TTS translation.*
-- **⚖️ NPK Deficit Calculator** — Measures nitrogen, phosphorus, and potassium shortfall per acre with dosage schedules.
-- **💧 Smart Irrigation Engine** — Calculates evapotranspiration-based daily watering recommendations.
-- **📈 Yield Maximizer** — Recommends high-value alternative cash crops based on soil microclimate.
-- **🔊 Voice-Assisted Insights** — Built-in Text-To-Speech (TTS) support for regional language accessibility.
+<br/>
 
 ---
 
-### 📈 Mandi Market Intelligence
-*Real-time pricing feeds, forecasting charts, and transportation cost calculators.*
-- **📊 Live Commodity Tracker** — Tracks real-time price fluctuations across regional agricultural markets (Mandis).
-- **📉 Interactive Trend Analytics** — Visualized price forecasting powered by Chart.js.
-- **🚚 Arbitrage Analyzer** — Compares local rural Mandis vs. city centers to evaluate net transport profit margins.
-- **📅 Harvest Timing Guidance** — Predicts market demand surges to advise on optimal harvest dates.
+## 🚀 Platform Modules
+
+<br/>
+
+### 🔬 Module 1 · Multi-Modal Field Diagnostics
+
+> *Point your camera. Get a clinical-grade field report in under 150ms.*
+
+| Capability | What It Does |
+|:---|:---|
+| 🌱 **Instant Crop Pathology** | Detects fungal, bacterial, and viral infections (Blight, Rust, Scab, Mosaic) across 20 classes |
+| 🐛 **Entomology Engine** | Pinpoints 102 insect species from a photo; maps to organic + chemical remedy protocols |
+| 🧪 **Soil Vision Profiler** | Derives texture, porosity, and NPK suitability from raw soil images without lab equipment |
+| 📊 **Severity Grading** | Scores infection severity from 0–100; triggers urgency flags for immediate intervention |
+
+<br/>
+
+### 🌾 Module 2 · Precision Crop & Water Advisory
+
+> *Science-grade recommendations calibrated to your exact soil chemistry and local microclimate.*
+
+| Capability | What It Does |
+|:---|:---|
+| ⚖️ **NPK Deficit Calculator** | Measures N / P / K shortfall (kg/acre); outputs a fertilizer dosage schedule |
+| 💧 **Smart Irrigation Engine** | Computes daily evapotranspiration demand from Open-Meteo live weather telemetry |
+| 📈 **Yield Maximizer** | Recommends top 3 high-value alternative cash crops ranked by soil-microclimate fit |
+| 🔊 **Voice-Assisted Insights** | Converts advisory reports to regional-language audio via gTTS for zero-literacy access |
+
+<br/>
+
+### 📈 Module 3 · Mandi Market Intelligence
+
+> *Know your market before you harvest. Sell at peak. Maximize margins.*
+
+| Capability | What It Does |
+|:---|:---|
+| 📊 **Live Commodity Tracker** | Streams real-time price data from regional agricultural market (Mandi) feeds |
+| 📉 **Trend Analytics** | Chart.js-powered 7-day price visualization with forecast curves |
+| 🚚 **Arbitrage Analyzer** | Compares rural Mandi vs. city-centre rates to compute net transport profit margin |
+| 📅 **Harvest Timing Guidance** | Predicts demand surge windows to advise optimal harvest date for premium pricing |
+
+<br/>
+
+### 📜 Module 4 · Welfare & Subsidy Matcher
+
+> *Never miss a rupee of subsidy you are entitled to.*
+
+| Capability | What It Does |
+|:---|:---|
+| 🎯 **Eligibility Engine** | Evaluates farm profile (landholding, crop type) against PM-KISAN, PMFBY, KUSUM schemes |
+| 🔗 **Direct Portal Integration** | Deep-links to official central and state government application portals |
+| 📚 **Knowledge Base** | Curated library of agronomical best practices, disaster recovery guides, and crop calendars |
+
+<br/>
 
 ---
 
-### 📜 Welfare & Subsidy Matcher
-*Algorithmic criteria matching, portal links, and emergency guides.*
-- **🎯 Automated Eligibility Engine** — Evaluates landholding and crop profiles against PM-KISAN, PMFBY, KUSUM, and regional schemes.
-- **🔗 Direct Portal Integration** — Provides direct links to official state and national application portals.
-- **📚 Resource Knowledge Base** — Comprehensive repository of agronomical best practices and disaster recovery guides.
+## 🛠️ Stack
 
----
+<br/>
 
-## 🛠️ Technology Ecosystem
+```
+╔═══════════════════════════════════════════════════════════════════════╗
+║                       TECHNOLOGY ARCHITECTURE                         ║
+╠══════════════════╦════════════════════════════════════════════════════╣
+║  BACKEND         ║  FastAPI 0.100+  ·  Uvicorn ASGI  ·  Pydantic v2  ║
+╠══════════════════╬════════════════════════════════════════════════════╣
+║  VISION AI       ║  PyTorch (MobileNetV3)  ·  OpenCV  ·  Pillow      ║
+╠══════════════════╬════════════════════════════════════════════════════╣
+║  TABULAR AI      ║  Scikit-Learn  ·  XGBoost  ·  NumPy / Pandas      ║
+╠══════════════════╬════════════════════════════════════════════════════╣
+║  GENERATIVE AI   ║  Google Gemini 1.5 Flash  ·  gTTS (TTS Engine)    ║
+╠══════════════════╬════════════════════════════════════════════════════╣
+║  FRONTEND        ║  HTML5  ·  CSS3 Glassmorphism  ·  ES6 JS          ║
+║                  ║  Chart.js  ·  AOS.js  ·  SweetAlert2              ║
+╠══════════════════╬════════════════════════════════════════════════════╣
+║  EXTERNAL APIS   ║  Open-Meteo (Weather)  ·  AgMarket (Mandi Feeds)  ║
+╚══════════════════╩════════════════════════════════════════════════════╝
+```
 
-### ⚡ Core Backend
-* **FastAPI** <img src="https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white" /> - Asynchronous REST API serving and request routing.
-* **Uvicorn** <img src="https://img.shields.io/badge/Uvicorn-4051B5?style=flat-square&logo=python&logoColor=white" /> - High-performance ASGI web server wrapper.
-* **Pydantic** <img src="https://img.shields.io/badge/Pydantic-E92063?style=flat-square&logo=pydantic&logoColor=white" /> - Asynchronous payload validation and schema safety.
-
-### 🧠 Neural Vision & Machine Learning
-* **PyTorch** <img src="https://img.shields.io/badge/PyTorch-EE4C2C?style=flat-square&logo=pytorch&logoColor=white" /> - MobileNetV3 Convolutional Neural Network execution.
-* **Scikit-Learn** <img src="https://img.shields.io/badge/Scikit--Learn-F7931E?style=flat-square&logo=scikit-learn&logoColor=white" /> - Tabular machine learning & classifier matrices.
-* **OpenCV** <img src="https://img.shields.io/badge/OpenCV-5C3EE8?style=flat-square&logo=opencv&logoColor=white" /> - Custom soil vision image feature calculations.
-
-### 🤖 Generative Cognition & Speech
-* **Google Gemini API** <img src="https://img.shields.io/badge/Google_Gemini-8E44AD?style=flat-square&logo=google&logoColor=white" /> - Dynamic local-first agronomist advice engine.
-* **gTTS** <img src="https://img.shields.io/badge/gTTS-10B981?style=flat-square&logo=python&logoColor=white" /> - Text-to-Speech voice translation for regional farmers.
-
-### 💻 Client Interface
-* **HTML5 / CSS3 Glassmorphism** <img src="https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white" /> <img src="https://img.shields.io/badge/CSS3_Glass-1572B6?style=flat-square&logo=css3&logoColor=white" /> - Interactive, beautiful responsive web dashboards.
-* **ES6 JS / Chart.js** <img src="https://img.shields.io/badge/ES6_JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black" /> <img src="https://img.shields.io/badge/Chart.js-FF6384?style=flat-square&logo=chartdotjs&logoColor=white" /> - Client state scripting & mandi commodity visual statistics.
-
-### 🌐 Live External APIs
-* **Open-Meteo API** <img src="https://img.shields.io/badge/Open--Meteo-0284C7?style=flat-square&logo=icloud&logoColor=white" /> - Evapotranspiration and live climate weather data feeds.
-* **AgMarket Feeds** <img src="https://img.shields.io/badge/AgMarket_Feeds-059669?style=flat-square&logo=rss&logoColor=white" /> - Real-time mandi rates from local agricultural yards.
+<br/>
 
 ---
 
 ## 📂 Project Structure
 
-```text
+```
 Krishi-Ai-main/
 │
-├── ⚡ backend/
+├── backend/                         ← FastAPI Application Root
 │   ├── app/
-│   │   ├── routers/            # FastAPI Endpoint Handlers (detection, prediction, advisory, market, schemes)
-│   │   ├── services/           # ML Inference Engines & Gemini API Integration
-│   │   └── config.py           # Application Settings & Confidence Threshold Guardrails
-│   ├── model_store/            # Trained Weights (.h5, .pkl AI Artifacts)
-│   └── run.py                  # Server Entrypoint (FastAPI + Uvicorn Async Launcher)
+│   │   ├── routers/                 ← REST Endpoint Handlers
+│   │   │   ├── detection.py         ·  /detect/disease · /detect/pest · /detect/soil
+│   │   │   ├── prediction.py        ·  /predict/crop   · /predict/fertilizer
+│   │   │   ├── advisory.py          ·  /advisory/generate
+│   │   │   ├── market.py            ·  /market/prices
+│   │   │   └── schemes.py           ·  /schemes/match
+│   │   ├── services/                ← ML Inference Engines
+│   │   │   ├── disease_service.py   ·  MobileNetV3 Leaf Pathology
+│   │   │   ├── pest_service.py      ·  MobileNetV3 Entomology
+│   │   │   ├── soil_service.py      ·  Random Forest Soil Vision
+│   │   │   ├── crop_service.py      ·  XGBoost Crop Predictor
+│   │   │   └── gemini_service.py    ·  Gemini LLM Advisory Generator
+│   │   └── config.py                ·  Thresholds · Keys · Settings
+│   ├── model_store/                 ← Trained Model Artifacts (.h5 / .pkl)
+│   └── run.py                       ← Uvicorn Entry Point
 │
-├── 💻 frontend/
-│   ├── assets/                 # Custom Glassmorphism CSS, JS Drivers (i18n.js, kisaan.js)
-│   ├── components/             # Dynamic UI Components (Navbar, Footer, Loader, Modals)
-│   ├── vendor/                 # Vendor Assets (Chart.js, AOS.js, SweetAlert2)
-│   ├── detection.html          # Plant Disease, Pest & Soil Vision Scanner
-│   ├── prediction.html         # Crop Selection & NPK Fertilizer Deficit Calculator
-│   ├── advisory.html           # Real-Time Agronomic Action Plan Dashboard
-│   ├── market.html             # Mandi Commodity Price Chart Analytics
-│   ├── schemes.html            # Government Welfare Subsidy Matcher
-│   └── index.html              # Core Landing Page Gateway
+├── frontend/                        ← Glassmorphic Web Client
+│   ├── assets/                      ·  CSS Themes · i18n.js · kisaan.js
+│   ├── components/                  ·  Navbar · Footer · Loader · Modals
+│   ├── vendor/                      ·  Chart.js · AOS.js · SweetAlert2
+│   ├── index.html                   ·  Landing Page
+│   ├── detection.html               ·  Vision Scanner
+│   ├── prediction.html              ·  NPK / Crop Calculator
+│   ├── advisory.html                ·  AI Advisory Dashboard
+│   ├── market.html                  ·  Mandi Price Analytics
+│   └── schemes.html                 ·  Government Scheme Matcher
 │
-├── 🛠️ scripts/                 # Utility Scripts (expand_pest_advisory.py)
-├── 📦 requirements.txt         # Production Dependencies
-└── 📄 README.md                # Platform Documentation
+├── scripts/                         ← Dev Utilities (expand_pest_advisory.py)
+├── requirements.txt                 ← Production Dependencies
+└── README.md
 ```
+
+<br/>
 
 ---
 
-## ⚡ Installation & Setup
+## 🚀 Getting Started
 
 > [!NOTE]
-> Ensure you have **Python 3.9+** and **Git** installed on your system before proceeding.
+> Prerequisites: **Python 3.9+** · **Git** · 4 GB RAM minimum for inference
 
-### Setup Wizard
+<br/>
 
+**① Clone & Enter**
 ```bash
-# 1. Clone the repository and navigate into the workspace
 git clone https://github.com/jeswanth90630/Krishi-Ai.git
 cd Krishi-Ai-main
+```
 
-# 2. Build the Python virtual sandbox environment
+**② Create Isolated Environment**
+```bash
 python -m venv .venv
 
-# 3. Activate the environment (Platform Specific)
-# For Windows (PowerShell):
+# Windows PowerShell
 .\.venv\Scripts\activate
-# For Linux / macOS:
-source .venv/bin/activate
 
-# 4. Install standard production requirements
+# macOS / Linux
+source .venv/bin/activate
+```
+
+**③ Install Dependencies**
+```bash
 pip install -r requirements.txt
 
-# 5. Install CPU-optimized neural processing engines
+# Optional: CPU-only PyTorch (lighter footprint)
 pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+```
 
-# 6. Set project execution variable & Launch application gateway
-# Windows (PowerShell):
-$env:PYTHONPATH="backend"
-python backend/run.py
-# Linux / macOS:
+**④ Launch the Server**
+```bash
+# Windows PowerShell
+$env:PYTHONPATH="backend"; python backend/run.py
+
+# macOS / Linux
 PYTHONPATH=backend python backend/run.py
 ```
 
-> [!SUCCESS]
-> The server will start running locally at **`http://127.0.0.1:8000`** 🚀
+> [!TIP]
+> Server starts at **`http://127.0.0.1:8000`**
+> Interactive docs → **`http://127.0.0.1:8000/docs`** · Redoc → **`http://127.0.0.1:8000/redoc`**
+
+<br/>
 
 ---
 
-## 📡 API Endpoint Reference
+## 📡 API Reference
 
-Once the server is running, explore interactive API documentation directly in your browser:
+<br/>
 
-* 📑 **Interactive Swagger UI:** [`http://127.0.0.1:8000/docs`](http://127.0.0.1:8000/docs)
-* 📖 **ReDoc OpenAPI Documentation:** [`http://127.0.0.1:8000/redoc`](http://127.0.0.1:8000/redoc)
+**Detection Endpoints** — multipart image upload → AI diagnosis
 
-### Core Endpoints
+| Method | Endpoint | Model | Returns |
+|:---:|:---|:---:|:---|
+| `POST` | `/api/v1/detect/disease` | MobileNetV3 | Pathology class · confidence · treatment steps |
+| `POST` | `/api/v1/detect/pest` | MobileNetV3 | Species ID · organic & chemical remedies |
+| `POST` | `/api/v1/detect/soil` | Random Forest | Soil texture · 153-feature profile · NPK suitability |
 
-* `POST /api/v1/detect/disease` - **Plant Pathology Scan**
-  * *Payload / Format:* `multipart/form-data`
-  * *Role:* Processes leaf image through MobileNetV3; returns pathology diagnosis & confidence.
+<br/>
 
-* `POST /api/v1/detect/pest` - **Entomology Identification**
-  * *Payload / Format:* `multipart/form-data`
-  * *Role:* Identifies pest species; returns organic & chemical treatment options.
+**Prediction Endpoints** — JSON payload → agronomic recommendation
 
-* `POST /api/v1/detect/soil` - **Soil Texture Vision**
-  * *Payload / Format:* `multipart/form-data`
-  * *Role:* Extracts 153 OpenCV visual features; predicts soil texture composition.
+| Method | Endpoint | Input | Returns |
+|:---:|:---|:---:|:---|
+| `POST` | `/api/v1/predict/crop` | NPK · pH · Temp · Humidity | Top 3 crops · yield estimates |
+| `POST` | `/api/v1/predict/fertilizer` | NPK deficit · crop type · area | kg/acre dosage · application calendar |
 
-* `POST /api/v1/predict/crop` - **Crop Selection Predictor**
-  * *Payload / Format:* `application/json`
-  * *Role:* Analyzes NPK, pH, and microclimate vectors to recommend top 3 optimal crops.
+<br/>
 
-* `POST /api/v1/predict/fertilizer` - **NPK Fertilizer Deficit Calculator**
-  * *Payload / Format:* `application/json`
-  * *Role:* Calculates NPK shortfall (kg/acre) and outputs custom dosage timeline.
+**Intelligence Endpoints** — live data + LLM synthesis
 
-* `GET /api/v1/market/prices` - **Mandi Market Rates**
-  * *Payload / Format:* `Query Parameters`
-  * *Role:* Returns real-time Mandi market rates and 7-day price trend forecasts.
+| Method | Endpoint | Returns |
+|:---:|:---|:---|
+| `GET` | `/api/v1/market/prices` | Real-time Mandi rates · 7-day trend forecast |
+| `POST` | `/api/v1/schemes/match` | Eligible welfare schemes · official application links |
 
-* `POST /api/v1/schemes/match` - **Welfare & Subsidy Matcher**
-  * *Payload / Format:* `application/json`
-  * *Role:* Matches landholding profile with government agricultural welfare subsidies.
+<br/>
 
 ---
 
-## 🛡️ Operational Safety & Privacy Guardrails
+## 🛡️ Safety & Privacy
 
-> [!IMPORTANT]
-> * **🔒 Ephemeral Processing:** All images uploaded during visual scans are processed strictly in RAM and discarded immediately after inference.
-> * **🛡️ Low-Confidence Rejection:** Diagnostic predictions falling below statistical threshold boundaries (e.g., `<35%`) prompt automatic user re-scans to prevent erroneous agricultural treatments.
-> * **⚡ Strict Schema Validation:** Generative AI responses pass through deterministic Pydantic validation schemas to safeguard against hallucinated outputs.
+```
+ GUARDRAIL                   MECHANISM                          THRESHOLD
+ ────────────────────────────────────────────────────────────────────────
+ Low Confidence Rejection    Confidence circuit-breaker         < 20-40%
+ Ephemeral Image Processing  RAM-only inference, no disk write  Always
+ AI Output Validation        Pydantic JSON schema enforcement   Always
+ XSS Sanitization            Gemini output scrubbing            Always
+ ────────────────────────────────────────────────────────────────────────
+```
+
+> [!WARNING]
+> Krishi AI diagnostic outputs are **decision-support tools**, not a replacement for certified agronomic advice. Always cross-reference high-severity alerts with a licensed field agronomist before applying treatments.
+
+<br/>
 
 ---
 
 <div align="center">
 
-  <br/>
+```
+═══════════════════════════════════════════════════════
+  🌾  KRISHI AI  ·  Architecting Precision Agriculture
+  Engineered with 💚 for Farming Ecosystems Worldwide
+═══════════════════════════════════════════════════════
+```
 
-  <h3>🌾 Krishi AI — <i>Architecting the Future of Precision Agriculture</i></h3>
-  <p><b>Engineered with 💚 for Farming Ecosystems Worldwide</b></p>
-
-  <br/>
-
-  <a href="#-krishi-ai">
-    <img src="https://img.shields.io/badge/Back_to_Top-%E2%86%91-10B981?style=for-the-badge" alt="Back to Top" />
-  </a>
-
-  <br/>
-  <br/>
+<a href="https://github.com/jeswanth90630/Krishi-ai">
+  <img src="https://img.shields.io/badge/⬆_Back_to_Top-10B981?style=for-the-badge" />
+</a>
 
 </div>
