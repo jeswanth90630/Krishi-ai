@@ -6,78 +6,65 @@
   </a>
 
   <br/>
+  <br/>
 
-  # 🌾 KRISHI AI
-
-  **Next-Generation Multimodal Precision Agriculture & Agronomic Decision System**
-  
-  *Unifying Edge Computer Vision, Classical Agronomic Machine Learning & LLM Reasoning to Protect Crop Yields*
+  <h1>🌾 KRISHI AI</h1>
+  <h3>Next-Generation Multimodal Precision Agriculture & Agronomic Decision System</h3>
+  <p><i>Unifying Edge Computer Vision, Classical Agronomic Machine Learning & LLM Reasoning to Protect Crop Yields</i></p>
 
   <br/>
 
-  <!-- BADGES MATRIX -->
+  <!-- BADGES MATRIX (Cohesive Green/Teal Gradient Color Grading) -->
   <p align="center">
     <a href="https://github.com/jeswanth90630/Krishi-ai">
       <img src="https://img.shields.io/badge/System_Status-Production--Ready-059669?style=for-the-badge&logo=rocket&logoColor=white" alt="Status" />
     </a>
     <a href="https://python.org">
-      <img src="https://img.shields.io/badge/Python-3.9+-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python" />
+      <img src="https://img.shields.io/badge/Python-3.9+-065F46?style=for-the-badge&logo=python&logoColor=white" alt="Python" />
     </a>
     <a href="https://fastapi.tiangolo.com/">
-      <img src="https://img.shields.io/badge/FastAPI-0.100+-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI" />
+      <img src="https://img.shields.io/badge/FastAPI-0.100+-0D9488?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI" />
     </a>
-    <br/>
     <a href="https://pytorch.org/">
-      <img src="https://img.shields.io/badge/PyTorch-MobileNetV3-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white" alt="PyTorch" />
+      <img src="https://img.shields.io/badge/PyTorch-MobileNetV3-0F766E?style=for-the-badge&logo=pytorch&logoColor=white" alt="PyTorch" />
     </a>
     <a href="https://scikit-learn.org/">
-      <img src="https://img.shields.io/badge/Scikit--Learn-ML_Core-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white" alt="Scikit-Learn" />
+      <img src="https://img.shields.io/badge/Scikit--Learn-ML_Core-10B981?style=for-the-badge&logo=scikit-learn&logoColor=white" alt="Scikit-Learn" />
     </a>
     <a href="https://ai.google.dev/">
-      <img src="https://img.shields.io/badge/Gen_AI-Google_Gemini-8E44AD?style=for-the-badge&logo=google&logoColor=white" alt="Gemini AI" />
+      <img src="https://img.shields.io/badge/Gen_AI-Google_Gemini-14B8A6?style=for-the-badge&logo=google&logoColor=white" alt="Gemini AI" />
     </a>
     <a href="https://opensource.org/licenses/MIT">
-      <img src="https://img.shields.io/badge/License-MIT-10B981?style=for-the-badge" alt="License" />
+      <img src="https://img.shields.io/badge/License-MIT-047857?style=for-the-badge" alt="License" />
     </a>
   </p>
 
   <br/>
 
   <!-- METRICS HIGHLIGHT BOARD -->
-  <table>
-    <thead>
-      <tr>
-        <th align="center" width="20%">🧬 Disease Vision</th>
-        <th align="center" width="20%">🐛 Pest Detection</th>
-        <th align="center" width="20%">🧪 Soil Profiler</th>
-        <th align="center" width="20%">⚡ Inference Speed</th>
-        <th align="center" width="20%">🤖 Gen-AI Advisor</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td align="center">
-          <h3>20+</h3>
-          <p>Leaf Diseases<br/><sub>PyTorch MobileNetV3</sub></p>
-        </td>
-        <td align="center">
-          <h3>102</h3>
-          <p>Pest Species<br/><sub>Entomological Vision</sub></p>
-        </td>
-        <td align="center">
-          <h3>153</h3>
-          <p>Soil Features<br/><sub>OpenCV Vision</sub></p>
-        </td>
-        <td align="center">
-          <h3>&lt; 150ms</h3>
-          <p>Inference Latency<br/><sub>Asynchronous API</sub></p>
-        </td>
-        <td align="center">
-          <h3>Gemini</h3>
-          <p>Agronomic LLM<br/><sub>Contextual Advisor</sub></p>
-        </td>
-      </tr>
-    </tbody>
+  <table align="center" width="100%">
+    <tr>
+      <td align="center" valign="top" width="20%">
+        <h3>🧬 20+</h3>
+        <p><b>Leaf Diseases</b><br/><sub>PyTorch MobileNetV3</sub></p>
+      </td>
+      <td align="center" valign="top" width="20%">
+        <h3>🐛 102</h3>
+        <p><b>Pest Species</b><br/><sub>Deep Entomological Vision</sub></p>
+      </td>
+      <td align="center" valign="top" width="20%">
+        <h3>🧪 153</h3>
+        <p><b>Soil Features</b><br/><sub>OpenCV Gradients & Color</sub></p>
+      </td>
+      <td align="center" valign="top" width="20%">
+        <h3>⚡ &lt;150ms</h3>
+        <p><b>Inference Speed</b><br/><sub>Asynchronous FastAPI API</sub></p>
+      </td>
+      <td align="center" valign="top" width="20%">
+        <h3>🤖 Gemini</h3>
+        <p><b>Gen-AI Advisor</b><br/><sub>Contextual Local Guidance</sub></p>
+      </td>
+    </tr>
   </table>
 
   <br/>
@@ -118,11 +105,11 @@ Krishi AI utilizes an asynchronous, event-driven microservice architecture power
 
 ```mermaid
 flowchart TD
-    %% Custom Styling
+    %% Custom Styling - Cohesive Green-to-Blue Color Grading
     classDef client fill:#064E3B,stroke:#10B981,stroke-width:2px,color:#FFF;
     classDef gateway fill:#0F766E,stroke:#14B8A6,stroke-width:2px,color:#FFF;
-    classDef model fill:#1E293B,stroke:#38BDF8,stroke-width:2px,color:#FFF;
-    classDef external fill:#581C87,stroke:#A855F7,stroke-width:2px,color:#FFF;
+    classDef model fill:#047857,stroke:#34D399,stroke-width:2px,color:#FFF;
+    classDef external fill:#1E3A8A,stroke:#60A5FA,stroke-width:2px,color:#FFF;
 
     subgraph ClientLayer ["📱 Frontend Presentation Layer"]
         UI["Glassmorphic Dashboard (HTML5 / CSS3 / ES6 JS)"]:::client
