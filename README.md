@@ -6,15 +6,12 @@
   </a>
 
   <br/>
-  <br/>
 
-  <h1>🌱 KRISHI AI</h1>
-  <p align="center">
-    <b>Next-Generation Multimodal Precision Agriculture & Agronomic Decision System</b>
-  </p>
-  <p align="center">
-    <em>Unifying Edge Computer Vision, Classical Agronomic Machine Learning & LLM Reasoning to Protect Crop Yields</em>
-  </p>
+  # 🌾 KRISHI AI
+
+  **Next-Generation Multimodal Precision Agriculture & Agronomic Decision System**
+  
+  *Unifying Edge Computer Vision, Classical Agronomic Machine Learning & LLM Reasoning to Protect Crop Yields*
 
   <br/>
 
@@ -29,6 +26,7 @@
     <a href="https://fastapi.tiangolo.com/">
       <img src="https://img.shields.io/badge/FastAPI-0.100+-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI" />
     </a>
+    <br/>
     <a href="https://pytorch.org/">
       <img src="https://img.shields.io/badge/PyTorch-MobileNetV3-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white" alt="PyTorch" />
     </a>
@@ -47,45 +45,54 @@
 
   <!-- METRICS HIGHLIGHT BOARD -->
   <table>
-    <tr>
-      <td align="center" width="20%">
-        <h3>🧬 20+</h3>
-        <p><b>Leaf Diseases</b><br/><sub>PyTorch MobileNetV3</sub></p>
-      </td>
-      <td align="center" width="20%">
-        <h3>🐛 102</h3>
-        <p><b>Pest Species</b><br/><sub>Deep Entomological Vision</sub></p>
-      </td>
-      <td align="center" width="20%">
-        <h3>🧪 153</h3>
-        <p><b>Soil Features</b><br/><sub>OpenCV Gradients & Color</sub></p>
-      </td>
-      <td align="center" width="20%">
-        <h3>⚡ &lt;150ms</h3>
-        <p><b>Inference Speed</b><br/><sub>Asynchronous FastAPI API</sub></p>
-      </td>
-      <td align="center" width="20%">
-        <h3>🤖 Gemini</h3>
-        <p><b>Gen-AI Advisor</b><br/><sub>Contextual Local Guidance</sub></p>
-      </td>
-    </tr>
+    <thead>
+      <tr>
+        <th align="center" width="20%">🧬 Disease Vision</th>
+        <th align="center" width="20%">🐛 Pest Detection</th>
+        <th align="center" width="20%">🧪 Soil Profiler</th>
+        <th align="center" width="20%">⚡ Inference Speed</th>
+        <th align="center" width="20%">🤖 Gen-AI Advisor</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td align="center">
+          <h3>20+</h3>
+          <p>Leaf Diseases<br/><sub>PyTorch MobileNetV3</sub></p>
+        </td>
+        <td align="center">
+          <h3>102</h3>
+          <p>Pest Species<br/><sub>Entomological Vision</sub></p>
+        </td>
+        <td align="center">
+          <h3>153</h3>
+          <p>Soil Features<br/><sub>OpenCV Vision</sub></p>
+        </td>
+        <td align="center">
+          <h3>&lt; 150ms</h3>
+          <p>Inference Latency<br/><sub>Asynchronous API</sub></p>
+        </td>
+        <td align="center">
+          <h3>Gemini</h3>
+          <p>Agronomic LLM<br/><sub>Contextual Advisor</sub></p>
+        </td>
+      </tr>
+    </tbody>
   </table>
 
   <br/>
 
   <!-- QUICK NAVIGATION CHIPS -->
   <p align="center">
-    <a href="#-executive-overview"><b> Overview</b></a> &nbsp;•&nbsp;
-    <a href="#-system-architecture"><b> Architecture</b></a> &nbsp;•&nbsp;
-    <a href="#-ai--ml-model-matrix"><b> AI Models</b></a> &nbsp;•&nbsp;
-    <a href="#-core-capabilities--modules"><b> Core Capabilities</b></a> &nbsp;•&nbsp;
-    <a href="#-technology-stack"><b> Tech Stack</b></a> &nbsp;•&nbsp;
-    <a href="#-project-structure"><b> Project Structure</b></a> &nbsp;•&nbsp;
-    <a href="#-installation--setup"><b> Getting Started</b></a> &nbsp;•&nbsp;
-    <a href="#-api-reference"><b> API Docs</b></a>
+    <a href="#-executive-overview"><b>Overview</b></a> &nbsp;•&nbsp;
+    <a href="#-system-architecture"><b>Architecture</b></a> &nbsp;•&nbsp;
+    <a href="#-ai--ml-model-matrix"><b>AI Models</b></a> &nbsp;•&nbsp;
+    <a href="#-core-capabilities--modules"><b>Core Capabilities</b></a> &nbsp;•&nbsp;
+    <a href="#-technology-stack"><b>Tech Stack</b></a> &nbsp;•&nbsp;
+    <a href="#-project-structure"><b>Project Structure</b></a> &nbsp;•&nbsp;
+    <a href="#-installation--setup"><b>Getting Started</b></a> &nbsp;•&nbsp;
+    <a href="#-api-reference"><b>API Docs</b></a>
   </p>
-
-  <br/>
 
 </div>
 
@@ -221,61 +228,13 @@ Krishi AI replaces single-model architectures with a **Hybrid Machine Learning P
 
 ## 🛠️ Technology Stack
 
-<table align="center" width="100%">
-  <thead>
-    <tr>
-      <th width="22%">Layer</th>
-      <th width="38%">Technologies Used</th>
-      <th width="40%">Role & Scope</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><b>⚡ Backend Framework</b></td>
-      <td>
-        <img src="https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white" />
-        <img src="https://img.shields.io/badge/Uvicorn-4051B5?style=flat-square&logo=python&logoColor=white" />
-        <img src="https://img.shields.io/badge/Pydantic-E92063?style=flat-square&logo=pydantic&logoColor=white" />
-      </td>
-      <td>Asynchronous REST API Gateway, request routing, payload validation, and static asset serving.</td>
-    </tr>
-    <tr>
-      <td><b>🧠 AI / ML Core</b></td>
-      <td>
-        <img src="https://img.shields.io/badge/PyTorch-EE4C2C?style=flat-square&logo=pytorch&logoColor=white" />
-        <img src="https://img.shields.io/badge/Scikit--Learn-F7931E?style=flat-square&logo=scikit-learn&logoColor=white" />
-        <img src="https://img.shields.io/badge/OpenCV-5C3EE8?style=flat-square&logo=opencv&logoColor=white" />
-      </td>
-      <td>Convolutional neural nets, random forest classifiers, computer vision feature extraction.</td>
-    </tr>
-    <tr>
-      <td><b>🤖 Generative AI</b></td>
-      <td>
-        <img src="https://img.shields.io/badge/Google_Gemini-8E44AD?style=flat-square&logo=google&logoColor=white" />
-        <img src="https://img.shields.io/badge/gTTS-10B981?style=flat-square&logo=python&logoColor=white" />
-      </td>
-      <td>LLM reasoning for customized agronomic advisory and text-to-speech voice output.</td>
-    </tr>
-    <tr>
-      <td><b>💻 Frontend UI</b></td>
-      <td>
-        <img src="https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white" />
-        <img src="https://img.shields.io/badge/CSS3_Glass-1572B6?style=flat-square&logo=css3&logoColor=white" />
-        <img src="https://img.shields.io/badge/ES6_JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black" />
-        <img src="https://img.shields.io/badge/Chart.js-FF6384?style=flat-square&logo=chartdotjs&logoColor=white" />
-      </td>
-      <td>Interactive dark-mode user dashboard, real-time charts, animated transitions, and modals.</td>
-    </tr>
-    <tr>
-      <td><b>🌐 Telemetry APIs</b></td>
-      <td>
-        <img src="https://img.shields.io/badge/Open--Meteo-0284C7?style=flat-square&logo=icloud&logoColor=white" />
-        <img src="https://img.shields.io/badge/AgMarket_Feeds-059669?style=flat-square&logo=rss&logoColor=white" />
-      </td>
-      <td>Real-time microclimate weather data, humidity, rainfall forecasts, and agricultural pricing feeds.</td>
-    </tr>
-  </tbody>
-</table>
+| Layer | Technologies Used | Role & Scope |
+| :--- | :--- | :--- |
+| **⚡ Backend Framework** | <img src="https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white" alt="FastAPI" /> <img src="https://img.shields.io/badge/Uvicorn-4051B5?style=flat-square&logo=python&logoColor=white" alt="Uvicorn" /> <img src="https://img.shields.io/badge/Pydantic-E92063?style=flat-square&logo=pydantic&logoColor=white" alt="Pydantic" /> | Asynchronous REST API Gateway, request routing, payload validation, and static asset serving. |
+| **🧠 AI / ML Core** | <img src="https://img.shields.io/badge/PyTorch-EE4C2C?style=flat-square&logo=pytorch&logoColor=white" alt="PyTorch" /> <img src="https://img.shields.io/badge/Scikit--Learn-F7931E?style=flat-square&logo=scikit-learn&logoColor=white" alt="Scikit-Learn" /> <img src="https://img.shields.io/badge/OpenCV-5C3EE8?style=flat-square&logo=opencv&logoColor=white" alt="OpenCV" /> | Convolutional neural nets, random forest classifiers, computer vision feature extraction. |
+| **🤖 Generative AI** | <img src="https://img.shields.io/badge/Google_Gemini-8E44AD?style=flat-square&logo=google&logoColor=white" alt="Gemini" /> <img src="https://img.shields.io/badge/gTTS-10B981?style=flat-square&logo=python&logoColor=white" alt="gTTS" /> | LLM reasoning for customized agronomic advisory and text-to-speech voice output. |
+| **💻 Frontend UI** | <img src="https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white" alt="HTML5" /> <img src="https://img.shields.io/badge/CSS3_Glass-1572B6?style=flat-square&logo=css3&logoColor=white" alt="CSS3" /> <img src="https://img.shields.io/badge/ES6_JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black" alt="JS" /> <img src="https://img.shields.io/badge/Chart.js-FF6384?style=flat-square&logo=chartdotjs&logoColor=white" alt="Chart.js" /> | Interactive dark-mode user dashboard, real-time charts, animated transitions, and modals. |
+| **🌐 Telemetry APIs** | <img src="https://img.shields.io/badge/Open--Meteo-0284C7?style=flat-square&logo=icloud&logoColor=white" alt="Open-Meteo" /> <img src="https://img.shields.io/badge/AgMarket_Feeds-059669?style=flat-square&logo=rss&logoColor=white" alt="AgMarket" /> | Real-time microclimate weather data, humidity, rainfall forecasts, and agricultural pricing feeds. |
 
 ---
 
@@ -409,4 +368,3 @@ Once the server is running, explore interactive API documentation directly in yo
   <br/>
 
 </div>
-
