@@ -1,4 +1,4 @@
-﻿<div align="center">
+<div align="center">
 
   <!-- DYNAMIC TYPING HEADER SVG -->
   <a href="https://github.com/jeswanth90630/Krishi-ai">
